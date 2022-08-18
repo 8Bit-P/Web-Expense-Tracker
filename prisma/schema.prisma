@@ -10,12 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  username  String
+  email     String
+  balance   Float
+
+  expenses Expense[]
+}
+
 model Expense {
   id      String       @id @default(uuid())
   date    DateTime     @default(now())
   concept String       @default("-")
   type    ExpenseType?
   amount  Float        @default(0.0)
+
+  createdBy User   @relation(fields: [userId], references: [id])
+  userId    String //no existe en la base de datos es solo una clave foranea
 }
 
 enum ExpenseType {

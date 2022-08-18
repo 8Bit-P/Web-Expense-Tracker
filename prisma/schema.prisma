@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Expense {
+  id      String       @id @default(uuid())
+  date    DateTime     @default(now())
+  concept String       @default("-")
+  type    ExpenseType?
+  amount  Float        @default(0.0)
+}
+
+enum ExpenseType {
+  FOOD
+  DRINKS
+  CASUAL_SHOPPING
+  SUPERMARKET
+  ONLINE_SHOPPING
+  FRIEND_TRANSFER
+  BILL
+}

@@ -20,8 +20,16 @@ import {
   faBasketShopping,
   faMobileScreen,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { useEffect } from "react";
 
-const ExpensesSection = () => {
+export default function ExpensesSection ({expenses}) {
+
+  useEffect(() => {
+    console.log(expenses)
+  }, [expenses])
+  
+
   return (
     <Box
       bgColor={"boxBackground"}
@@ -39,6 +47,7 @@ const ExpensesSection = () => {
             <Tr>
               <Th>Expense Type</Th>
               <Th>Concept</Th>
+              <Th>Date</Th>
               <Th isNumeric>Amount</Th>
             </Tr>
           </Thead>
@@ -51,10 +60,11 @@ const ExpensesSection = () => {
                     width: "25px",
                     height: "25px",
                   }}
-                  icon={faMobileScreen}
+                  icon={faBasketShopping}
                 />
               </Td>
               <Td>Compra en mercadona</Td>
+              <Td>12/5/22</Td>
               <Td isNumeric>25.4€</Td>
             </Tr>
           </Tbody>
@@ -64,4 +74,13 @@ const ExpensesSection = () => {
   );
 };
 
-export default ExpensesSection;
+
+
+
+export const getServerSideProps = async () => {
+  const expenses = await axios.get("http://localhost:3000/api/expenses").json()
+
+  return{
+    props:expenses
+  }
+}

@@ -30,3 +30,4 @@ const ProfileSection = ({ name, balance }) => {
 };
 
 export default ProfileSection;
+

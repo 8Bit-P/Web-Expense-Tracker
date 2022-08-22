@@ -1,20 +1,26 @@
-//import { prisma } from '../../lib/prisma';
-import { PrismaClient } from ".prisma/client";
+import { prisma } from '../../lib/prisma';
 
 export default async function handler(req,res){
+
+    if(req.method === 'POST'){
+        try{
     
-    const prisma = new PrismaClient();
+            const {concept, type, amount, userId} = req.body;
 
-    try{
-
-        const expenses = await prisma.expense.findMany();
-
-        return {
-            props: {expenses},
-            revalidate: 10, //en segundos
+            const expense = await prisma.expense.create({
+                data: {
+                    concept,
+                    type,
+                    amount,
+                    userId
+                }
+            })
+            
+            res.status(200).json({expense});
+    
+        }catch(err){
+            res.status(400).json({err});
         }
-
-    }catch(err){
-        res.status(400).json({err});
     }
+
 }

@@ -14,7 +14,8 @@ const colors = {
 };
 
 const fonts = {
-
+  heading:'Exo 2',
+  body:'Exo 2'
 };
 
 const myNewTheme = extendTheme({ config, colors, fonts });

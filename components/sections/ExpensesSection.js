@@ -9,6 +9,9 @@ import {
   Tbody,
   Td,
   Tfoot,
+  HStack,
+  Text,
+  Spacer,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,17 +22,10 @@ import {
   faReceipt,
   faBasketShopping,
   faMobileScreen,
+  faDollarSign,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import { useEffect } from "react";
 
-export default function ExpensesSection ({expenses}) {
-
-  useEffect(() => {
-    console.log(expenses)
-  }, [expenses])
-  
-
+function ExpensesSection({}) {
   return (
     <Box
       bgColor={"boxBackground"}
@@ -38,11 +34,36 @@ export default function ExpensesSection ({expenses}) {
       h="100%"
       borderRadius={"lg"}
       borderWidth="2px"
-      borderColor={"#20254B"}
+      borderColor={"#24204b"}
       boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
     >
-      <TableContainer>
-        <Table colorScheme={"whiteAlpha"}>
+      <HStack fontWeight={"600"}>
+        <Box
+          borderRadius={"100%"}
+          bgColor="#1ab1c4"
+          p="1.5"
+          boxShadow={"rgba(26, 177, 196, 0.24) 0px 3px 8px;"}
+        >
+          <FontAwesomeIcon
+            style={{
+              width: "20px",
+              height: "20px",
+            }}
+            icon={faDollarSign}
+          />
+        </Box>
+        <Text>Expense record</Text>
+
+        <Spacer />
+
+        <Text>
+          {" "}
+          <span style={{ color: "#cf3f1b" }}>234</span> Total Expenses
+        </Text>
+      </HStack>
+
+      <TableContainer mt="5">
+        <Table colorScheme={"whiteAlpha"} size="sm">
           <Thead>
             <Tr>
               <Th>Expense Type</Th>
@@ -57,8 +78,8 @@ export default function ExpensesSection ({expenses}) {
               <Td>
                 <FontAwesomeIcon
                   style={{
-                    width: "25px",
-                    height: "25px",
+                    width: "20px",
+                    height: "20px",
                   }}
                   icon={faBasketShopping}
                 />
@@ -72,15 +93,6 @@ export default function ExpensesSection ({expenses}) {
       </TableContainer>
     </Box>
   );
-};
-
-
-
-
-export const getServerSideProps = async () => {
-  const expenses = await axios.get("http://localhost:3000/api/expenses").json()
-
-  return{
-    props:expenses
-  }
 }
+
+export default ExpensesSection;

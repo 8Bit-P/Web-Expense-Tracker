@@ -11,7 +11,10 @@ import ProfileSection from "../components/sections/ProfileSection";
 import SideMenuSection from "../components/sections/SideMenuSection";
 import StatusSection from "../components/sections/StatusSection";
 
-export default function Home() {
+export default function Home({expenses}) {
+
+  console.log(expenses)
+
   return (
     <VStack bgColor={"background"} h="100vh" p="5">
       <Head>
@@ -23,15 +26,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
 
       <Grid
-        templateColumns="300px 1fr 1fr"
+        templateColumns="280px 1fr 1fr"
         templateRows="90px 2fr 3fr"
         templateAreas={`"header header"
                         "nav graphs"
                         "nav expenses"`}
-        gap={6}
+        gap={4}
         w="100%"
         /* maxW={"1800px"} */
         h="100%"
@@ -65,4 +67,19 @@ export default function Home() {
       </Grid>
     </VStack>
   );
+}
+
+import prisma from "../lib/prisma";
+
+export const getServerSideProps = async () => {
+
+  let expenses = await prisma.expense.findMany();
+  expenses = JSON.parse(JSON.stringify(expenses))
+
+
+  return{
+    props:{
+      expenses:{expenses}
+    }
+  }
 }

@@ -10,7 +10,7 @@ const SideMenuSection = () => {
       h="100%"
       borderRadius={"lg"}
       borderWidth="2px"
-      borderColor={"#20254B"}
+      borderColor={"#24204b"}
       boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
     ></Box>
   );

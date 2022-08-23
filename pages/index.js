@@ -1,22 +1,14 @@
-import { Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Heading, HStack, VStack, Text, Button, Box } from "@chakra-ui/react";
 import Head from "next/head";
-
-
-import ExpenseList from "../components/main/ExpenseList";
+import ExpensesList from "../components/expenses/ExpensesList";
 
 import Navbar from "../components/main/Navbar";
-import ExpensesSection from "../components/sections/ExpensesSection";
-import MonthlyExpensesSection from "../components/sections/MonthlyExpensesSection";
-import ProfileSection from "../components/sections/ProfileSection";
-import SideMenuSection from "../components/sections/SideMenuSection";
-import StatusSection from "../components/sections/StatusSection";
+import Pagination from "../components/main/Pagination";
+import Sidebar from "../components/main/Sidebar";
 
-export default function Home({expenses}) {
-
-  console.log(expenses)
-
+export default function Home({ expenses }) {
   return (
-    <VStack bgColor={"background"} h="100vh" p="5">
+    <VStack align={"left"} bgColor={"background"} h="100vh" color="fontColor" spacing="5">
       <Head>
         <title>MyExpenses - Home</title>
         <meta
@@ -26,45 +18,53 @@ export default function Home({expenses}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
+      <Sidebar />
 
-      <Grid
-        templateColumns="280px 1fr 1fr"
-        templateRows="90px 2fr 3fr"
-        templateAreas={`"header header"
-                        "nav graphs"
-                        "nav expenses"`}
-        gap={4}
-        w="100%"
-        /* maxW={"1800px"} */
-        h="100%"
-        color={"fontColor"}
-      >
-        <GridItem rowStart={1} colStart={1}>
-          <ProfileSection name="Walter Hartwell White" balance="122000000.34" />
-        </GridItem>
+      <HStack w="100%" pt="100px" spacing="10">
+        <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
+          <VStack align={"left"} spacing="0">
+            <Heading>Welcome to your</Heading>{" "}
+            <Heading
+              background={"-webkit-linear-gradient(45deg,#CC5476, #989BCD)"}
+              backgroundClip="text"
+            >
+              Dashboard!
+            </Heading>
 
-        <GridItem rowStart={1} colStart={2} colSpan={2}>
-          <StatusSection/>
-        </GridItem>
+          </VStack>
+          <Text>
+            Take a general view of your expenses and manage some of your data
+            through this window
+          </Text>
+          <HStack>
+            <Button
+              Button
+              w="45px"
+              h="45px"
+              bgColor={"primary"}
+              borderWidth="3px"
+              borderColor={"primary"}
+              _hover={{ backgroundColor: "transparent" }}
+              _active={{ backgroundColor: "transparent" }}
+              fontWeight="600"
+            >
+              <Heading mb="2">+</Heading>
+            </Button>
+            <Text color="primary" fontWeight={"400"}>
+              Start adding some expenses!
+            </Text>
+          </HStack>
+        </VStack>
 
-        <GridItem gridArea={"nav"}>
-          <SideMenuSection/>
-        </GridItem>
-
-        <GridItem colStart={2} rowStart={2}>
-          <MonthlyExpensesSection/>
-        </GridItem>
-
-        <GridItem colStart={3} rowStart={2}>
-          <MonthlyExpensesSection/>
-        </GridItem>
-
-        <GridItem colStart={2} rowStart={3} colSpan={2}>
-          <ExpensesSection/>
-        </GridItem>
+        <Box w="200px" h="300px" bgColor="customPurple" borderRadius={"30px"} />
+        <Box w="200px" h="300px" bgColor="customGreen" borderRadius={"30px"} />
+        <Box w="200px" h="300px" bgColor="customCyan" borderRadius={"30px"} />
+      </HStack>
 
 
-      </Grid>
+      <ExpensesList/>
+      <Pagination total={3}/>
     </VStack>
   );
 }
@@ -72,14 +72,12 @@ export default function Home({expenses}) {
 import prisma from "../lib/prisma";
 
 export const getServerSideProps = async () => {
-
   let expenses = await prisma.expense.findMany();
-  expenses = JSON.parse(JSON.stringify(expenses))
+  expenses = JSON.parse(JSON.stringify(expenses));
 
-
-  return{
-    props:{
-      expenses:{expenses}
-    }
-  }
-}
+  return {
+    props: {
+      expenses: { expenses },
+    },
+  };
+};

@@ -6,11 +6,14 @@ const config = {
 };
 
 const colors = {
-  background:"#14132A",
-  boxBackground:"#2A2A48",
-  primary: "#F49A70",
+  background:"#28344D",
+  boxBackground:"#333E5C",
+  primary: "#CC5476",
   secondary: "#545665",
   fontColor:"#DADBE0",
+  customPurple:"#989BCD",
+  customCyan:"#8CBEDF",
+  customGreen:"#C4DFC2"
 };
 
 const fonts = {

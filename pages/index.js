@@ -39,7 +39,6 @@ export default function Home({ expenses }) {
           </Text>
           <HStack>
             <Button
-              Button
               w="45px"
               h="45px"
               bgColor={"primary"}
@@ -52,7 +51,7 @@ export default function Home({ expenses }) {
               <Heading mb="2">+</Heading>
             </Button>
             <Text color="primary" fontWeight={"400"}>
-              Start adding some expenses!
+              Add some goals for the month!
             </Text>
           </HStack>
         </VStack>
@@ -64,7 +63,7 @@ export default function Home({ expenses }) {
 
 
       <ExpensesList/>
-      <Pagination total={3}/>
+      <Pagination total={10}/>
     </VStack>
   );
 }

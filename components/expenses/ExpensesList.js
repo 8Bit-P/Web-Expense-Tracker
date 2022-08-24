@@ -87,6 +87,7 @@ const ExpensesList = () => {
             </Td>
           </Tr>
 
+                  
         </Tbody>
       </Table>
     </TableContainer>

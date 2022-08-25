@@ -1,6 +1,6 @@
 import { IconButton, Button, HStack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { motion  } from "framer-motion";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -12,7 +12,7 @@ const MotionButton = motion(Button);
 
 const Pagination = ({ total = 1 }) => {
   const TOTAL_PAGES = 7;
-  const POINTER_POSITIONS = [0,44,88,132,176,220,264];
+  const POINTER_POSITIONS = [0, 44, 88, 132, 176, 220, 264];
 
   const [pages, setPages] = useState([]);
   const [arrayIndex, setArrayIndex] = useState(0); //start on the first element of the array
@@ -42,7 +42,6 @@ const Pagination = ({ total = 1 }) => {
       tempPages.push(">>>");
       tempPages.push(total.toString()); //add the last page in the end */
       setPages(tempPages);
-
     } else {
       for (let index = 1; index <= total; index++) {
         tempPages.push(index.toString());
@@ -55,7 +54,7 @@ const Pagination = ({ total = 1 }) => {
     if (currentPage < total) {
       //we wont get a pointing error in array index with this
 
-      if (arrayIndex === 3) {
+      if (arrayIndex === 3 && total > 7) {
         //POINTER IS IN THE MIDDLE
         //Now we have to check whether it keeps in the middle or goes on
         if (currentPage + 3 !== total) {
@@ -79,7 +78,6 @@ const Pagination = ({ total = 1 }) => {
           setArrayIndex(arrayIndex + 1);
           setCurrentPage(currentPage + 1);
           setPages(temp);
-          
         }
       } else {
         //MOVING RIGHT WITHOUT CHANGING PAGES
@@ -88,7 +86,6 @@ const Pagination = ({ total = 1 }) => {
 
         setCurrentPage(temp + 1);
         setArrayIndex(tempArrayIndex + 1);
-
       }
     }
   };
@@ -96,7 +93,7 @@ const Pagination = ({ total = 1 }) => {
   const moveLeft = () => {
     if (currentPage > 1) {
       //we wont get a pointing error in array index with this
-      if (arrayIndex === 3 ) {
+      if (arrayIndex === 3 && total > 7) {
         //POINTER IS IN THE MIDDLE
         //Now we have to check wheter it keeps in the middle or goes on
         if (currentPage - 3 !== 1) {
@@ -110,36 +107,33 @@ const Pagination = ({ total = 1 }) => {
 
           setCurrentPage(currentPage - 1);
           setPages(temp);
-        } else if(currentPage -3 === 1){
+        } else if (currentPage - 3 === 1) {
           //first 3 pages
           let temp = [];
-          for (let i = 1; i <= 5; i++) temp.push((i).toString());
+          for (let i = 1; i <= 5; i++) temp.push(i.toString());
 
           temp.push(">>>");
           temp.push(total.toString());
 
           setArrayIndex(arrayIndex - 1);
-          setCurrentPage(currentPage -1);
+          setCurrentPage(currentPage - 1);
           setPages(temp);
-          
         }
       } else {
         //MOVING RIGHT WITHOUT CHANGING PAGES
         let temp = currentPage;
         let tempArrayIndex = arrayIndex;
-      
+
         setCurrentPage(temp - 1);
         setArrayIndex(tempArrayIndex - 1);
-
       }
-
     }
   };
 
-  function createMiddlePos(){
-    let temp = ["1","<<<"];
-    let middle = Math.floor(total/2);
-    for (let i = middle; i < middle+3; i++) temp.push((i).toString());
+  function createMiddlePos() {
+    let temp = ["1", "<<<"];
+    let middle = Math.floor(total / 2);
+    for (let i = middle; i < middle + 3; i++) temp.push(i.toString());
     temp.push(">>>");
     temp.push(total);
     setArrayIndex(3); //middle
@@ -147,59 +141,70 @@ const Pagination = ({ total = 1 }) => {
     setPages(temp);
   }
 
+
+
   const goToPage = (p) => {
-    if (p === ">>>") {
-      if (arrayIndex === 3) {
-        
-        let temp = [];
-        temp.push("1");
-        temp.push("<<<");
-        for(let i = total-4; i<=total;i++) temp.push(i);
-        
-        setArrayIndex(TOTAL_PAGES - 1);
-        setCurrentPage(total);
-        setPages(temp);
+    if (p !== currentPage.toString() && total > 7) {
+      if (p === ">>>" || (arrayIndex < 3 && pages.indexOf(p.toString()) === 4)) {
+        if (arrayIndex === 3) {
+          let temp = [];
+          temp.push("1");
+          temp.push("<<<");
+          for (let i = total - 4; i <= total; i++) temp.push(i);
 
-      }else{
-        createMiddlePos();
-      }
+          setArrayIndex(TOTAL_PAGES - 1);
+          setCurrentPage(total);
+          setPages(temp);
+        } else {
+          createMiddlePos();
+        }
+      } else if (p === "<<<" || (arrayIndex > 3 && pages.indexOf(p.toString()) === 2)) {
+        if (arrayIndex === 3) {
+          let temp = [];
 
-    } else if (p === "<<<") {
-      if (arrayIndex === 3) {
-        
-        let temp = [];
+          for (let i = 1; i <= 5; i++) temp.push(i);
+          temp.push(">>>");
+          temp.push(total);
 
-        for(let i = 1; i<=5;i++) temp.push(i);
-        temp.push(">>>");
-        temp.push(total);
-        
-        setArrayIndex(0);
-        setCurrentPage(1);
-        setPages(temp);
-
-      }else{
-        createMiddlePos();
-      }
-    } else {
-
-      if(arrayIndex === 3){
-        if(parseInt(p) === currentPage + 1){
+          setArrayIndex(0);
+          setCurrentPage(1);
+          setPages(temp);
+        } else {
+          createMiddlePos();
+        }
+      } else {
+        //adyacent movements
+        if (parseInt(p) === currentPage + 1) {
           //right
           moveRight();
-        }else if(parseInt(p) === currentPage - 1){
+        } else if (parseInt(p) === currentPage - 1) {
           //left
           moveLeft();
-        }
-      }else{
-        //both ends
-        if(p === "1"){
+        } else {
+          //both ends
+          if (p === "1") {
+            setPages(["1", "2", "3", "4", "5", ">>>", total.toString()]);
+            setCurrentPage(parseInt(p));
+            setArrayIndex(0);
+          } else if (p === total.toString()) {
+            let temp = ["1", "<<<"];
 
-        }else if(p === total.toString()){
-          
+            for (let i = total - 4; i <= total; i++) temp.push(i.toString());
+
+            setPages(temp);
+            setCurrentPage(total);
+            setArrayIndex(TOTAL_PAGES-1);
+          }else{
+            //it's safe to go anywhere without changing the pages at this point
+            setCurrentPage(parseInt(p));
+            setArrayIndex(pages.indexOf(p)); //search for the element index and stablish array index
+          }
         }
       }
-      //setCurrentPage(parseInt(p));
-      //setArrayIndex(pages.indexOf(p)); //search for the element index and stablish array index
+
+    }else{
+      setCurrentPage(parseInt(p));
+      setArrayIndex(pages.indexOf(p)); //search for the element index and stablish array index
     }
   };
 
@@ -214,8 +219,8 @@ const Pagination = ({ total = 1 }) => {
         zIndex="1"
         borderRadius={"12px"}
         ml="48px"
-        animate={{x: POINTER_POSITIONS[arrayIndex]}}
-        transition={{ type: "spring",duration:0.3 }}
+        animate={{ x: POINTER_POSITIONS[arrayIndex] }}
+        transition={{ type: "spring", duration: 0.3 }}
       ></MotionButton>
 
       <IconButton

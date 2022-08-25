@@ -63,7 +63,7 @@ export default function Home({ expenses }) {
 
 
       <ExpensesList/>
-      <Pagination total={10}/>
+      <Pagination total={11}/>
     </VStack>
   );
 }

@@ -6,9 +6,14 @@ import Navbar from "../components/main/Navbar";
 import Pagination from "../components/main/Pagination";
 import Sidebar from "../components/main/Sidebar";
 
-export default function Home({ expenses }) {
+import {getSession} from "next-auth/react"
+
+export default function Home({ user }) {
+
+    console.log(user);
+
   return (
-    <VStack align={"left"} bgColor={"background"} h="100vh" color="fontColor" spacing="5">
+    <VStack align={"left"} pb="50px" bgColor={"background"} h="100%" minH="100vh" color="fontColor" spacing="10">
       <Head>
         <title>MyExpenses - Home</title>
         <meta
@@ -21,7 +26,7 @@ export default function Home({ expenses }) {
       <Navbar />
       <Sidebar />
 
-      <HStack w="100%" pt="100px" spacing="10">
+      <HStack w="100%" pt="150px" spacing="10">
         <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
           <VStack align={"left"} spacing="0">
             <Heading>Welcome to your</Heading>{" "}
@@ -62,21 +67,51 @@ export default function Home({ expenses }) {
       </HStack>
 
 
-      <ExpensesList/>
-      <Pagination total={11}/>
+      <VStack align="left" pb="10">
+        <ExpensesList/>
+        <Pagination total={11}/>
+      </VStack>
+
+      <VStack align="left">
+        <Text ml="120px" fontWeight={"500"}>ADDITIONAL INFORMATION</Text>
+        <HStack spacing="6">
+          <Box h="300px" w="500px" bgColor={"boxBackground"} ml="120px"/>
+          <Box h="300px" w="600px" bgColor={"boxBackground"} ml="120px"/>
+          
+        </HStack>
+      </VStack>
     </VStack>
   );
 }
 
-import prisma from "../lib/prisma";
+/* import prisma from "../lib/prisma"; */
 
-export const getServerSideProps = async () => {
-  let expenses = await prisma.expense.findMany();
+export const getServerSideProps = async (context ) => {
+
+  const session = await getSession(context);
+  if(!session){
+    return{
+      redirect:{
+        destination: "/login",
+        permanent: false
+      }
+    }
+  }
+
+  const {user} = session;
+
+  return {
+    props:{
+      user
+    }
+  }
+  
+  /* let expenses = await prisma.expense.findMany();
   expenses = JSON.parse(JSON.stringify(expenses));
 
   return {
     props: {
       expenses: { expenses },
     },
-  };
+  }; */
 };

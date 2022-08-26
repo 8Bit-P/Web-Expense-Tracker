@@ -19,6 +19,7 @@ const Navbar = ({
       color="fontColor"
       bgColor="boxBackground"
       zIndex={1}
+      position="fixed"
     >
       <Box w="40px" h="40px" bgColor={"primary"} borderRadius="lg"/>
 

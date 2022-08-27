@@ -130,12 +130,13 @@ const Pagination = ({ total = 1 }) => {
     }
   };
 
+   /* FIXME: on middle sections detects next page as same going through the else statement */
   function createMiddlePos() {
     let temp = ["1", "<<<"];
     let middle = Math.floor(total / 2);
     for (let i = middle; i < middle + 3; i++) temp.push(i.toString());
     temp.push(">>>");
-    temp.push(total);
+    temp.push(total.toString());
     setArrayIndex(3); //middle
     setCurrentPage(middle);
     setPages(temp);
@@ -144,13 +145,14 @@ const Pagination = ({ total = 1 }) => {
 
 
   const goToPage = (p) => {
-    if (p !== currentPage.toString() && total > 7) {
+   
+    if (total > 7) {
       if (p === ">>>" || (arrayIndex < 3 && pages.indexOf(p.toString()) === 4)) {
         if (arrayIndex === 3) {
           let temp = [];
           temp.push("1");
           temp.push("<<<");
-          for (let i = total - 4; i <= total; i++) temp.push(i);
+          for (let i = total - 4; i <= total; i++) temp.push(i.toString());
 
           setArrayIndex(TOTAL_PAGES - 1);
           setCurrentPage(total);
@@ -162,9 +164,9 @@ const Pagination = ({ total = 1 }) => {
         if (arrayIndex === 3) {
           let temp = [];
 
-          for (let i = 1; i <= 5; i++) temp.push(i);
+          for (let i = 1; i <= 5; i++) temp.push(i.toString());
           temp.push(">>>");
-          temp.push(total);
+          temp.push(total.toString());
 
           setArrayIndex(0);
           setCurrentPage(1);
@@ -173,12 +175,14 @@ const Pagination = ({ total = 1 }) => {
           createMiddlePos();
         }
       } else {
+        
         //adyacent movements
         if (parseInt(p) === currentPage + 1) {
           //right
           moveRight();
         } else if (parseInt(p) === currentPage - 1) {
           //left
+          console.log("HA PASADO AQUI")
           moveLeft();
         } else {
           //both ends

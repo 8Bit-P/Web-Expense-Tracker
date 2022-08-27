@@ -34,26 +34,6 @@ const Sidebar = () => {
         w="80px"
         bgColor={"boxBackground"}
       >
-        {/* CONFIG */}
-        <MotionIconButton
-          top="50%"
-          color="#CC5476"
-          bgColor={"transparent"}
-          _hover={{ backgroundColor: "transparent", color: "#cf3862" }}
-          _active={{ background: "transparent" }}
-          whileHover={{ rotate: 30 }}
-          transition={{ duration: 0.15 }}
-          onClick={() => goToConfig}
-        >
-          <FontAwesomeIcon
-            style={{
-              width: "25px",
-              height: "25px",
-            }}
-            icon={faGear}
-          />
-        </MotionIconButton>
-
         {/* ADD NEW EXPENSE */}
         <MotionIconButton
           top="50%"
@@ -74,6 +54,26 @@ const Sidebar = () => {
           />
         </MotionIconButton>
 
+        {/* CONFIG */}
+        <MotionIconButton
+          top="50%"
+          color="#CC5476"
+          bgColor={"transparent"}
+          _hover={{ backgroundColor: "transparent", color: "#cf3862" }}
+          _active={{ background: "transparent" }}
+          whileHover={{ rotate: 30 }}
+          transition={{ duration: 0.15 }}
+          onClick={() => goToConfig}
+        >
+          <FontAwesomeIcon
+            style={{
+              width: "25px",
+              height: "25px",
+            }}
+            icon={faGear}
+          />
+        </MotionIconButton>
+        {/* LOGOUT */}
         <MotionIconButton
           top="50%"
           color="#CC5476"

@@ -69,7 +69,7 @@ export default function Home({ user }) {
 
       <VStack align="left" pb="10">
         <ExpensesList/>
-        <Pagination total={11}/>
+        <Pagination total={10}/>
       </VStack>
 
       <VStack align="left">
@@ -99,6 +99,8 @@ export const getServerSideProps = async (context ) => {
   }
 
   const {user} = session;
+
+  console.log(session);
 
   return {
     props:{

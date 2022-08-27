@@ -13,7 +13,8 @@ const colors = {
   fontColor:"#DADBE0",
   customPurple:"#989BCD",
   customCyan:"#8CBEDF",
-  customGreen:"#C4DFC2"
+  customGreen:"#C4DFC2",
+  modal:"#131923",
 };
 
 const fonts = {

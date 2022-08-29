@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -31,9 +31,8 @@ import axios from "axios";
 import { Authcontext } from "../../context/AuthContext";
 
 const AddExpenseModal = ({ isOpen, onClose }) => {
-  
   const auth = useContext(Authcontext);
-  
+
   const [expenseType, setExpenseType] = useState();
   const [concept, setConcept] = useState("");
   const [amount, setAmount] = useState(0.0);
@@ -42,13 +41,38 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  const updateConcept = (e) => {
+    setConcept(e.target.value);
+  };
+
+  const updateDate = (e) => {
+    setDate(e.target.value);
+  };
+
+  const updateAmount = (e) => {
+    setAmount(e.target.value);
+  };
+
   const createExpense = () => {
-    axios.post("http://localhost:3000/api/expenses",{concept, expenseType, amount, email: auth.email}).then( () => {
-      console.log("User created succesfully");
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+    axios
+      .post("http://localhost:3000/api/expenses", {
+        concept,
+        expenseType,
+        amount,
+        date,
+        email: auth.email,
+      })
+      .then(() => {
+        console.log("Expense created succesfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+ /* TODO: add validation */
+ /* TODO: exit menu when accepted expense */
+ /* TODO: save state of expense when closing and opening */
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
@@ -79,6 +103,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 placeholder="Concept"
                 borderRadius={"xl"}
                 maxLength={40}
+                onChange={updateConcept}
               />
             </InputGroup>
 
@@ -102,6 +127,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 type="number"
                 placeholder="Amount"
                 borderRadius={"xl"}
+                onChange={updateAmount}
               />
             </InputGroup>
 
@@ -125,6 +151,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 type="date"
                 placeholder="Date"
                 borderRadius={"xl"}
+                onChange={updateDate}
               />
             </InputGroup>
 
@@ -260,7 +287,12 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
           >
             Close
           </Button>
-          <Button fontWeight="400" colorScheme={"messenger"} type="submit" onClick={createExpense}>
+          <Button
+            fontWeight="400"
+            colorScheme={"messenger"}
+            type="submit"
+            onClick={createExpense}
+          >
             Create
           </Button>
         </ModalFooter>

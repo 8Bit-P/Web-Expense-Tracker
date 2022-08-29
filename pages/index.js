@@ -11,7 +11,10 @@ import { Authcontext } from "../context/AuthContext";
 
 import {getSession} from "next-auth/react"
 
-export default function Home({ user }) {
+export default function Home({ user,expenses }) {
+
+  console.log("expenses:")
+  console.log(expenses)
 
   const auth = useContext(Authcontext);
 
@@ -80,7 +83,7 @@ export default function Home({ user }) {
 
 
       <VStack align="left" pb="10">
-        <ExpensesList/>
+        <ExpensesList expenses={expenses}/>
         <Pagination total={10}/>
       </VStack>
 
@@ -96,7 +99,7 @@ export default function Home({ user }) {
   );
 }
 
-/* import prisma from "../lib/prisma"; */
+import prisma from "../lib/prisma";
 
 export const getServerSideProps = async (context ) => {
 
@@ -112,20 +115,28 @@ export const getServerSideProps = async (context ) => {
 
   const {user} = session;
 
+  console.log("loggin session:")
   console.log(session);
+  const prismaUser = await prisma.user.findFirst({where:{
+    email:user.email
+}})
 
-  return {
-    props:{
-      user
+  console.log("loggin user:")
+  console.log(prismaUser);
+
+  let expenses = await prisma.expense.findMany({
+    where:{
+      userId:prismaUser.userId
     }
-  }
-  
-  /* let expenses = await prisma.expense.findMany();
+  })
+
   expenses = JSON.parse(JSON.stringify(expenses));
 
   return {
-    props: {
-      expenses: { expenses },
-    },
-  }; */
+    props:{
+      user,
+      expenses
+    }
+  }
+
 };

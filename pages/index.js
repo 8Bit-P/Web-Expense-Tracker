@@ -6,11 +6,23 @@ import Navbar from "../components/main/Navbar";
 import Pagination from "../components/main/Pagination";
 import Sidebar from "../components/main/Sidebar";
 
+import { useState,useContext,useEffect } from "react";
+import { Authcontext } from "../context/AuthContext";
+
 import {getSession} from "next-auth/react"
 
 export default function Home({ user }) {
 
-    console.log(user);
+  const auth = useContext(Authcontext);
+
+  const [username, setUsername] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [profilePicture, setProfilePicture] = useState(user.image)
+
+  useEffect(() => {
+      auth.email = user.email;
+  }, [user])
+  
 
   return (
     <VStack align={"left"} pb="50px" bgColor={"background"} h="100%" minH="100vh" color="fontColor" spacing="10">
@@ -23,7 +35,7 @@ export default function Home({ user }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
+      <Navbar name={username} avatar={profilePicture}/>
       <Sidebar />
 
       <HStack w="100%" pt="150px" spacing="10">

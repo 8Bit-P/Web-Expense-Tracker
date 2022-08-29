@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -27,8 +27,13 @@ import {
   faMoneyBill,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { Authcontext } from "../../context/AuthContext";
 
 const AddExpenseModal = ({ isOpen, onClose }) => {
+  
+  const auth = useContext(Authcontext);
+  
   const [expenseType, setExpenseType] = useState();
   const [concept, setConcept] = useState("");
   const [amount, setAmount] = useState(0.0);
@@ -36,6 +41,14 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+
+  const createExpense = () => {
+    axios.post("http://localhost:3000/api/expenses",{concept, expenseType, amount, email: auth.email}).then( () => {
+      console.log("User created succesfully");
+    }).catch(err => {
+      console.log(err);
+    })
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
@@ -247,7 +260,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
           >
             Close
           </Button>
-          <Button fontWeight="400" colorScheme={"messenger"} type="submit">
+          <Button fontWeight="400" colorScheme={"messenger"} type="submit" onClick={createExpense}>
             Create
           </Button>
         </ModalFooter>

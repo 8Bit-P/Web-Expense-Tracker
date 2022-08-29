@@ -47,10 +47,10 @@ const Navbar = ({
             {name}
           </Text>
           <Text fontStyle={"italic"} fontSize="sm">
-            Balance: {balance + "€"}
+            Balance: {balance + "€"} {/* TODO: */}
           </Text>
         </VStack>
-        <Avatar src={avatar} />
+        <Avatar src={avatar} referrerPolicy="no-referrer"/>
         <Box h="10px" w="10px" transform={"rotate(45deg)"} bgColor="customPurple" cursor={"pointer"}>
           <Box h="6px" w="6px" margin={"0 auto"} top="50%" left="50%" position={"absolute"} transform={"translate(-50%, -50%)"} bgColor="primary"/>
         </Box>

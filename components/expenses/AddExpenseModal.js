@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -14,6 +14,7 @@ import {
   Text,
   IconButton,
   Wrap,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,18 +29,20 @@ import {
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { Authcontext } from "../../context/AuthContext";
+import { UtilsContext } from "../../context/UtilsContext";
 
 const AddExpenseModal = ({ isOpen, onClose }) => {
-  const auth = useContext(Authcontext);
+  const utils = useContext(UtilsContext);
 
   const [expenseType, setExpenseType] = useState();
   const [concept, setConcept] = useState("");
   const [amount, setAmount] = useState(0.0);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+
+  //load previous values
 
   const updateConcept = (e) => {
     setConcept(e.target.value);
@@ -54,25 +57,31 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
   };
 
   const createExpense = () => {
+
+
+    setIsLoading(true);
     axios
-      .post("http://localhost:3000/api/expenses", {
+      .post("http://localhost:3000/api/addExpense", {
         concept,
         expenseType,
         amount,
         date,
-        email: auth.email,
+        email: utils.email,
       })
       .then(() => {
         console.log("Expense created succesfully");
+        setIsLoading(false);
+        setConcept("");
+        setDate(new Date().toISOString().split("T")[0]);
+        setAmount(0.0);
+        setExpenseType("NONE");
+        onClose(); //close the modal
       })
       .catch((err) => {
         console.log(err);
+        setError(err);
       });
   };
-
- /* TODO: add validation */
- /* TODO: exit menu when accepted expense */
- /* TODO: save state of expense when closing and opening */
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
@@ -104,6 +113,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 borderRadius={"xl"}
                 maxLength={40}
                 onChange={updateConcept}
+                value={concept}
               />
             </InputGroup>
 
@@ -128,7 +138,11 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 placeholder="Amount"
                 borderRadius={"xl"}
                 onChange={updateAmount}
+                value={amount}
               />
+              <InputRightElement>
+                <Text>€</Text>
+              </InputRightElement>
             </InputGroup>
 
             <InputGroup w="300px" m="0 auto" mt="5">
@@ -152,6 +166,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
                 placeholder="Date"
                 borderRadius={"xl"}
                 onChange={updateDate}
+                value={date}
               />
             </InputGroup>
 
@@ -292,6 +307,7 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
             colorScheme={"messenger"}
             type="submit"
             onClick={createExpense}
+            isLoading={isLoading}
           >
             Create
           </Button>

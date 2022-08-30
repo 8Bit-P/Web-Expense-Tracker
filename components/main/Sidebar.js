@@ -1,5 +1,3 @@
-import React from "react";
-
 import { VStack, IconButton, useDisclosure } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +15,8 @@ const MotionIconButton = motion(IconButton);
 
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
+
 
   const goToConfig = () => {
     /* TODO: poner links  */
@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <AddExpenseModal isOpen={isOpen} onClose={onClose} />
+      <AddExpenseModal isOpen={isOpen} onClose={onClose}/>
       <VStack
         h="100%"
         zIndex={0}

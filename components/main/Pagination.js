@@ -10,13 +10,14 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const MotionButton = motion(Button);
 
-const Pagination = ({ total = 1 }) => {
-  const TOTAL_PAGES = 7;
+const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
+
+  const MAX_PAGES = 7;
   const POINTER_POSITIONS = [0, 44, 88, 132, 176, 220, 264];
 
   const [pages, setPages] = useState([]);
   const [arrayIndex, setArrayIndex] = useState(0); //start on the first element of the array
-  const [currentPage, setCurrentPage] = useState(1); // 1 - total
+  
 
   const [isHovering, setIsHovering] = useState({ left: false, right: false });
 
@@ -34,7 +35,7 @@ const Pagination = ({ total = 1 }) => {
   useEffect(() => {
     var tempPages = [];
 
-    if (total > TOTAL_PAGES) {
+    if (total > MAX_PAGES) {
       for (let index = 1; index < 6; index++) {
         tempPages.push(index.toString());
       }
@@ -48,7 +49,7 @@ const Pagination = ({ total = 1 }) => {
       }
       setPages(tempPages);
     }
-  }, []);
+  }, [total]);
 
   const moveRight = () => {
     if (currentPage < total) {
@@ -88,6 +89,7 @@ const Pagination = ({ total = 1 }) => {
         setArrayIndex(tempArrayIndex + 1);
       }
     }
+
   };
 
   const moveLeft = () => {
@@ -140,6 +142,7 @@ const Pagination = ({ total = 1 }) => {
     setArrayIndex(3); //middle
     setCurrentPage(middle);
     setPages(temp);
+
   }
 
 
@@ -154,7 +157,7 @@ const Pagination = ({ total = 1 }) => {
           temp.push("<<<");
           for (let i = total - 4; i <= total; i++) temp.push(i.toString());
 
-          setArrayIndex(TOTAL_PAGES - 1);
+          setArrayIndex(MAX_PAGES - 1);
           setCurrentPage(total);
           setPages(temp);
         } else {
@@ -197,7 +200,7 @@ const Pagination = ({ total = 1 }) => {
 
             setPages(temp);
             setCurrentPage(total);
-            setArrayIndex(TOTAL_PAGES-1);
+            setArrayIndex(MAX_PAGES-1);
           }else{
             //it's safe to go anywhere without changing the pages at this point
             setCurrentPage(parseInt(p));

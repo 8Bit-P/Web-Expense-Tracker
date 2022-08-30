@@ -6,16 +6,14 @@ export default async function handler(req, res) {
 
         const { concept, expenseType: type, amount, date, email } = req.body;
     
-        console.log(req.body);/* 
-         *///check if userId exists and amount is a number
-    
+        /* TODO: validate inputs */
         
         const user = await prisma.user.findFirst({where:{
             email:email
         }});
     
         if (!user) {
-          console.log("something went wrong");
+          /* console.log("something went wrong"); */
           req.status(400).json({err: "User could not be found"})
         }
     

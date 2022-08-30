@@ -6,29 +6,85 @@ import Navbar from "../components/main/Navbar";
 import Pagination from "../components/main/Pagination";
 import Sidebar from "../components/main/Sidebar";
 
-import { useState,useContext,useEffect } from "react";
-import { Authcontext } from "../context/AuthContext";
+import { useState, useContext, useEffect } from "react";
+import { UtilsContext } from "../context/UtilsContext";
 
-import {getSession} from "next-auth/react"
+import { getSession } from "next-auth/react";
 
-export default function Home({ user,expenses }) {
+import axios from "axios";
 
-  console.log("expenses:")
-  console.log(expenses)
+export default function Home({ user }) {
 
-  const auth = useContext(Authcontext);
+  const utils = useContext(UtilsContext);
 
+  /* necessary? */
   const [username, setUsername] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [profilePicture, setProfilePicture] = useState(user.image)
+  const [profilePicture, setProfilePicture] = useState(user.image);
 
   useEffect(() => {
-      auth.email = user.email;
-  }, [user])
+    utils.email = user.email;
+  }, [user]);
+
+  //pagination 
+
+  const [expenses, setExpenses] = useState([])
+  const [isExpensesLoading, setIsExpensesLoading] = useState(false)
+
+  const fetchExpenses = async () => {
+    setIsExpensesLoading(true);
+    axios.post("http://localhost:3000/api/getExpenses",{email:utils.email}).then(res => {
+      setExpenses(res.data);
+      console.log(res.data);
+      setIsExpensesLoading(false);
+
+      //set corresponding pages
+      setTotalPages(Math.max(Math.ceil(res.data.length/4),1))
+      adjustCurrentExpenses();
+
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  //load expenses once page has loaded
+  useEffect(() => {
+    fetchExpenses();
+  }, [])
   
 
+  /* TODO: expenses and pagination calculation */
+  const [currentPage, setCurrentPage] = useState(1); // 1 - total
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentExpenses, setCurrentExpenses] = useState([])
+
+  const MAX_EXPENSES_DISPLAY = 4;
+
+  useEffect(() => {
+    //each time page is changed update expenses
+    adjustCurrentExpenses();
+  }, [currentPage])
+  
+
+  const adjustCurrentExpenses = () => {
+    const endingIndex = Math.min(expenses.length,currentPage*MAX_EXPENSES_DISPLAY)
+    const beginingIndex = Math.max(0,endingIndex-MAX_EXPENSES_DISPLAY)
+
+    console.log(`range min ${beginingIndex}, max ${endingIndex}`)
+    console.log(expenses.slice(beginingIndex,endingIndex))
+    setCurrentExpenses(expenses.slice(beginingIndex,endingIndex));
+  }
+
+
   return (
-    <VStack align={"left"} pb="50px" bgColor={"background"} h="100%" minH="100vh" color="fontColor" spacing="10">
+    <VStack
+      align={"left"}
+      pb="50px"
+      bgColor={"background"}
+      h="100%"
+      minH="100vh"
+      color="fontColor"
+      spacing="10"
+    >
       <Head>
         <title>MyExpenses - Home</title>
         <meta
@@ -38,10 +94,10 @@ export default function Home({ user,expenses }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar name={username} avatar={profilePicture}/>
+      <Navbar name={username} avatar={profilePicture} />
       <Sidebar />
 
-      <HStack w="100%" pt="150px" spacing="10">
+      <HStack w="100%" pt="100px" spacing="10">
         <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
           <VStack align={"left"} spacing="0">
             <Heading>Welcome to your</Heading>{" "}
@@ -51,7 +107,6 @@ export default function Home({ user,expenses }) {
             >
               Dashboard!
             </Heading>
-
           </VStack>
           <Text>
             Take a general view of your expenses and manage some of your data
@@ -81,18 +136,18 @@ export default function Home({ user,expenses }) {
         <Box w="200px" h="300px" bgColor="customCyan" borderRadius={"30px"} />
       </HStack>
 
-
       <VStack align="left" pb="10">
-        <ExpensesList expenses={expenses}/>
-        <Pagination total={10}/>
+        <ExpensesList expenses={currentExpenses} />
+        <Pagination total={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </VStack>
 
       <VStack align="left">
-        <Text ml="120px" fontWeight={"500"}>ADDITIONAL INFORMATION</Text>
+        <Text ml="120px" fontWeight={"500"}>
+          ADDITIONAL INFORMATION
+        </Text>
         <HStack spacing="6">
-          <Box h="300px" w="500px" bgColor={"boxBackground"} ml="120px"/>
-          <Box h="300px" w="600px" bgColor={"boxBackground"} ml="120px"/>
-          
+          <Box h="300px" w="500px" bgColor={"boxBackground"} ml="120px" />
+          <Box h="300px" w="600px" bgColor={"boxBackground"} ml="120px" />
         </HStack>
       </VStack>
     </VStack>
@@ -101,42 +156,48 @@ export default function Home({ user,expenses }) {
 
 import prisma from "../lib/prisma";
 
-export const getServerSideProps = async (context ) => {
 
+export const getServerSideProps = async (context) => {
   const session = await getSession(context);
-  if(!session){
-    return{
-      redirect:{
+  if (!session) {
+    return {
+      redirect: {
         destination: "/login",
-        permanent: false
-      }
-    }
+        permanent: false,
+      },
+    };
   }
 
-  const {user} = session;
+  const { user } = session;
 
-  console.log("loggin session:")
+  console.log("login session:");
   console.log(session);
-  const prismaUser = await prisma.user.findFirst({where:{
-    email:user.email
-}})
+  let prismaUser = await prisma.user.findFirst({
+    where: {
+      email: user.email,
+    },
+  });
 
-  console.log("loggin user:")
+  //user not registered
+  if(!prismaUser){
+    //create account
+    prismaUser = await prisma.user.create({
+      data:{
+        username:user.name,
+        email:user.email,
+        balance:0
+      }
+    })
+  }
+
+  console.log("login user:");
   console.log(prismaUser);
 
-  let expenses = await prisma.expense.findMany({
-    where:{
-      userId:prismaUser.userId
-    }
-  })
 
-  expenses = JSON.parse(JSON.stringify(expenses));
 
   return {
-    props:{
-      user,
-      expenses
-    }
-  }
-
+    props: {
+      user
+    },
+  };
 };

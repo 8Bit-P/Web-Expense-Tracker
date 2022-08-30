@@ -31,7 +31,7 @@ import {
 import axios from "axios";
 import { UtilsContext } from "../../context/UtilsContext";
 
-const AddExpenseModal = ({ isOpen, onClose }) => {
+const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
   const utils = useContext(UtilsContext);
 
   const [expenseType, setExpenseType] = useState();
@@ -75,11 +75,13 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
         setDate(new Date().toISOString().split("T")[0]);
         setAmount(0.0);
         setExpenseType("NONE");
+        fetchExpenses();
         onClose(); //close the modal
       })
       .catch((err) => {
         console.log(err);
         setError(err);
+        setIsLoading(false);
       });
   };
 

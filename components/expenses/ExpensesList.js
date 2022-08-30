@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -20,6 +19,8 @@ import {
   faPenToSquare,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
+import axios from "axios";
 
 const ICONS = {
   FOOD: faBurger,
@@ -30,13 +31,17 @@ const ICONS = {
   BILL: faReceipt,
 };
 
-const ExpensesList = ({ expenses }) => {
+const ExpensesList = ({ expenses,fetchExpenses }) => {
   
-  const [expenseList, setExpenseList] = useState(expenses)
+  const deleteExpense = (expenseId) => {
+    axios.post("http://localhost:3000/api/removeExpense",{id:expenseId}).then(() => {
+      fetchExpenses();
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
-  /* TODO: update list when new expense is added */
-  /* (compare newly fetched expenses with getserversideprops expenses to see if they have changed) */
-
+/* TODO: add animation to slowly scale up or down from table height */
   return (
     <Box w="80%" maxW="1250px" pl="120px" pt="25px">
       <Table
@@ -100,6 +105,7 @@ const ExpensesList = ({ expenses }) => {
                       }}
                       _active={{ background: "transparent" }}
                       color="#CC5476"
+                      onClick={() => deleteExpense(expense.id)}
                     >
                       <FontAwesomeIcon
                         style={{

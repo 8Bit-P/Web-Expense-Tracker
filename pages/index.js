@@ -1,4 +1,12 @@
-import { Heading, HStack, VStack, Text, Button, Box } from "@chakra-ui/react";
+import {
+  Heading,
+  HStack,
+  VStack,
+  Text,
+  Button,
+  Box,
+  Skeleton,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import ExpensesList from "../components/expenses/ExpensesList";
 
@@ -14,7 +22,6 @@ import { getSession } from "next-auth/react";
 import axios from "axios";
 
 export default function Home({ user }) {
-
   const utils = useContext(UtilsContext);
 
   /* necessary? */
@@ -25,55 +32,62 @@ export default function Home({ user }) {
     utils.email = user.email;
   }, [user]);
 
-  //pagination 
+  //pagination
 
-  const [expenses, setExpenses] = useState([])
-  const [isExpensesLoading, setIsExpensesLoading] = useState(false)
+  const [expenses, setExpenses] = useState([]);
+  const [isExpensesLoading, setIsExpensesLoading] = useState(true);
 
   const fetchExpenses = async () => {
     setIsExpensesLoading(true);
-    axios.post("http://localhost:3000/api/getExpenses",{email:utils.email}).then(res => {
-      setExpenses(res.data);
-      console.log(res.data);
-      setIsExpensesLoading(false);
+    axios
+      .post("http://localhost:3000/api/getExpenses", { email: utils.email })
+      .then((res) => {
+        setExpenses(res.data);
+        setIsExpensesLoading(false);
 
-      //set corresponding pages
-      setTotalPages(Math.max(Math.ceil(res.data.length/4),1))
-      adjustCurrentExpenses();
+        //set corresponding pages
+        let tempTotalPages = Math.max(
+          Math.ceil(res.data.length / MAX_EXPENSES_DISPLAY),
+          1
+        );
+        setTotalPages(tempTotalPages);
+        adjustCurrentExpenses(res.data);
 
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+        if (currentPage > tempTotalPages) {
+          let temp = currentPage - 1;
+          setCurrentPage(temp);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   //load expenses once page has loaded
   useEffect(() => {
     fetchExpenses();
-  }, [])
-  
+  }, []);
 
-  /* TODO: expenses and pagination calculation */
+  /* Expenses and pagination calculation */
   const [currentPage, setCurrentPage] = useState(1); // 1 - total
   const [totalPages, setTotalPages] = useState(1);
-  const [currentExpenses, setCurrentExpenses] = useState([])
+  const [currentExpenses, setCurrentExpenses] = useState([]);
 
   const MAX_EXPENSES_DISPLAY = 4;
 
   useEffect(() => {
     //each time page is changed update expenses
-    adjustCurrentExpenses();
-  }, [currentPage])
-  
+    if (!isExpensesLoading) adjustCurrentExpenses(expenses);
+  }, [currentPage]);
 
-  const adjustCurrentExpenses = () => {
-    const endingIndex = Math.min(expenses.length,currentPage*MAX_EXPENSES_DISPLAY)
-    const beginingIndex = Math.max(0,endingIndex-MAX_EXPENSES_DISPLAY)
-
-    console.log(`range min ${beginingIndex}, max ${endingIndex}`)
-    console.log(expenses.slice(beginingIndex,endingIndex))
-    setCurrentExpenses(expenses.slice(beginingIndex,endingIndex));
-  }
-
+  const adjustCurrentExpenses = (exp) => {
+    const beginingIndex = (currentPage - 1) * MAX_EXPENSES_DISPLAY;
+    const endingIndex = Math.min(
+      beginingIndex + MAX_EXPENSES_DISPLAY,
+      exp.length
+    );
+    setCurrentExpenses(exp.slice(beginingIndex, endingIndex));
+  };
 
   return (
     <VStack
@@ -95,7 +109,7 @@ export default function Home({ user }) {
       </Head>
 
       <Navbar name={username} avatar={profilePicture} />
-      <Sidebar />
+      <Sidebar fetchExpenses={fetchExpenses} />
 
       <HStack w="100%" pt="100px" spacing="10">
         <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
@@ -137,8 +151,34 @@ export default function Home({ user }) {
       </HStack>
 
       <VStack align="left" pb="10">
-        <ExpensesList expenses={currentExpenses} />
-        <Pagination total={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        {isExpensesLoading ? (
+          <VStack
+            pt="25px"
+            pb="25px"
+            w="80%"
+            maxW="1250px"
+            pl="120px"
+            spacing="5"
+          >
+            <Skeleton w="100%" h="15px" />
+
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+          </VStack>
+        ) : (
+          <ExpensesList
+            expenses={currentExpenses}
+            fetchExpenses={fetchExpenses}
+          />
+        )}
+
+        <Pagination
+          total={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </VStack>
 
       <VStack align="left">
@@ -156,7 +196,6 @@ export default function Home({ user }) {
 
 import prisma from "../lib/prisma";
 
-
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   if (!session) {
@@ -170,8 +209,8 @@ export const getServerSideProps = async (context) => {
 
   const { user } = session;
 
-  console.log("login session:");
-  console.log(session);
+  /*   console.log("login session:");
+  console.log(session); */
   let prismaUser = await prisma.user.findFirst({
     where: {
       email: user.email,
@@ -179,25 +218,23 @@ export const getServerSideProps = async (context) => {
   });
 
   //user not registered
-  if(!prismaUser){
+  if (!prismaUser) {
     //create account
     prismaUser = await prisma.user.create({
-      data:{
-        username:user.name,
-        email:user.email,
-        balance:0
-      }
-    })
+      data: {
+        username: user.name,
+        email: user.email,
+        balance: 0,
+      },
+    });
   }
 
-  console.log("login user:");
-  console.log(prismaUser);
-
-
+  /*   console.log("login user:");
+  console.log(prismaUser); */
 
   return {
     props: {
-      user
+      user,
     },
   };
 };

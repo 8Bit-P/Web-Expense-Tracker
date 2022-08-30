@@ -29,10 +29,28 @@ export default async function handler(req, res) {
                 userId,
             }
         })
-    
-        res.status(200).json({ expense });
+        
+        //201 created resource
+        res.status(201).json({ expense });
     }catch(err){
         res.status(400).json(err);
+    }
+  }else if(req.method === "DELETE"){
+    try{
+      const {expenseId} = req.body;
+
+      console.log("id is: " + id)
+
+      const deletedExpense = await prisma.expense.delete({
+        where:{
+          id:expenseId
+        }
+      })
+
+      res.status(200).json({deletedExpense})
+
+    }catch(err){
+      res.status(400).json(err);
     }
   }
 }

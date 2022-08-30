@@ -10,14 +10,12 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const MotionButton = motion(Button);
 
-const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
-
+const Pagination = ({ total = 1, currentPage, setCurrentPage }) => {
   const MAX_PAGES = 7;
   const POINTER_POSITIONS = [0, 44, 88, 132, 176, 220, 264];
 
   const [pages, setPages] = useState([]);
   const [arrayIndex, setArrayIndex] = useState(0); //start on the first element of the array
-  
 
   const [isHovering, setIsHovering] = useState({ left: false, right: false });
 
@@ -30,6 +28,13 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
     if (p === ">>>" || p === "<<<")
       setIsHovering({ left: false, right: false });
   };
+
+  useEffect(() => {
+    if(arrayIndex + 1 > total){
+      setArrayIndex(arrayIndex-1);
+    }
+  }, [currentPage])
+  
 
   //first time to create pages accordingly to total
   useEffect(() => {
@@ -89,7 +94,6 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
         setArrayIndex(tempArrayIndex + 1);
       }
     }
-
   };
 
   const moveLeft = () => {
@@ -132,7 +136,7 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
     }
   };
 
-   /* FIXME: on middle sections detects next page as same going through the else statement */
+  /* FIXME: on middle sections detects next page as same going through the else statement */
   function createMiddlePos() {
     let temp = ["1", "<<<"];
     let middle = Math.floor(total / 2);
@@ -142,15 +146,14 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
     setArrayIndex(3); //middle
     setCurrentPage(middle);
     setPages(temp);
-
   }
 
-
-
   const goToPage = (p) => {
-   
     if (total > 7) {
-      if (p === ">>>" || (arrayIndex < 3 && pages.indexOf(p.toString()) === 4)) {
+      if (
+        p === ">>>" ||
+        (arrayIndex < 3 && pages.indexOf(p.toString()) === 4)
+      ) {
         if (arrayIndex === 3) {
           let temp = [];
           temp.push("1");
@@ -163,7 +166,10 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
         } else {
           createMiddlePos();
         }
-      } else if (p === "<<<" || (arrayIndex > 3 && pages.indexOf(p.toString()) === 2)) {
+      } else if (
+        p === "<<<" ||
+        (arrayIndex > 3 && pages.indexOf(p.toString()) === 2)
+      ) {
         if (arrayIndex === 3) {
           let temp = [];
 
@@ -178,14 +184,13 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
           createMiddlePos();
         }
       } else {
-        
         //adyacent movements
         if (parseInt(p) === currentPage + 1) {
           //right
           moveRight();
         } else if (parseInt(p) === currentPage - 1) {
           //left
-          console.log("HA PASADO AQUI")
+          console.log("HA PASADO AQUI");
           moveLeft();
         } else {
           //both ends
@@ -200,16 +205,15 @@ const Pagination = ({ total = 1,currentPage,setCurrentPage }) => {
 
             setPages(temp);
             setCurrentPage(total);
-            setArrayIndex(MAX_PAGES-1);
-          }else{
+            setArrayIndex(MAX_PAGES - 1);
+          } else {
             //it's safe to go anywhere without changing the pages at this point
             setCurrentPage(parseInt(p));
             setArrayIndex(pages.indexOf(p)); //search for the element index and stablish array index
           }
         }
       }
-
-    }else{
+    } else {
       setCurrentPage(parseInt(p));
       setArrayIndex(pages.indexOf(p)); //search for the element index and stablish array index
     }

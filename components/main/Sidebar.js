@@ -13,7 +13,7 @@ import AddExpenseModal from "../expenses/AddExpenseModal";
 
 const MotionIconButton = motion(IconButton);
 
-const Sidebar = () => {
+const Sidebar = ({fetchExpenses}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
 
@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <AddExpenseModal isOpen={isOpen} onClose={onClose}/>
+      <AddExpenseModal isOpen={isOpen} onClose={onClose} fetchExpenses={fetchExpenses}/>
       <VStack
         h="100%"
         zIndex={0}

@@ -153,14 +153,14 @@ export default function Home({ user }) {
       <VStack align="left" pb="10">
         {isExpensesLoading ? (
           <VStack
-            pt="25px"
+            pt="50px"
             pb="25px"
             w="80%"
             maxW="1250px"
             pl="120px"
             spacing="5"
           >
-            <Skeleton w="100%" h="15px" />
+            <Skeleton w="100%" h="20px" />
 
             <Skeleton w="100%" h="50px" />
             <Skeleton w="100%" h="50px" />
@@ -186,7 +186,7 @@ export default function Home({ user }) {
           ADDITIONAL INFORMATION
         </Text>
         <HStack spacing="6">
-          <Box h="300px" w="500px" bgColor={"boxBackground"} ml="120px" />
+          <MonthlyExpenseGraph/>
           <Box h="300px" w="600px" bgColor={"boxBackground"} ml="120px" />
         </HStack>
       </VStack>
@@ -195,6 +195,7 @@ export default function Home({ user }) {
 }
 
 import prisma from "../lib/prisma";
+import MonthlyExpenseGraph from "../components/graphs/MonthlyExpenseGraph";
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);

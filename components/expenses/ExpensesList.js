@@ -22,7 +22,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import RemoveExpenseModal from "./RemoveExpenseModal";
+import { motion } from "framer-motion";
 
+const MotionBox = motion(Box);
 
 const ICONS = {
   FOOD: faBurger,
@@ -34,20 +36,33 @@ const ICONS = {
 };
 
 const ExpensesList = ({ expenses, fetchExpenses }) => {
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedExpenseId, setSelectedExpenseId] = useState(null)
+  const [selectedExpenseId, setSelectedExpenseId] = useState(null);
 
   const deleteExpense = (expenseId) => {
     setSelectedExpenseId(expenseId);
     onOpen();
-  }
+  };
 
   /* TODO: add animation to slowly scale up or down from table height */
   return (
     <>
-    <RemoveExpenseModal isOpen={isOpen} onClose={onClose} fetchExpenses={fetchExpenses} expenseId={selectedExpenseId}/>
-      <Box w="80%" maxW="1250px" pl="120px" pt="25px">
+      <RemoveExpenseModal
+        isOpen={isOpen}
+        onClose={onClose}
+        fetchExpenses={fetchExpenses}
+        expenseId={selectedExpenseId}
+      />
+      <MotionBox
+        w="80%"
+        maxW="1250px"
+        pl="120px"
+        pt="25px"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{duration:1}}
+      >
         <Table
           variant="unstyled"
           style={{ borderCollapse: "separate", borderSpacing: "0 1em" }}
@@ -132,7 +147,7 @@ const ExpensesList = ({ expenses, fetchExpenses }) => {
             )}
           </Tbody>
         </Table>
-      </Box>
+      </MotionBox>
     </>
   );
 };

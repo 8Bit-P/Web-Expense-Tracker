@@ -5,6 +5,8 @@ export default async function handler(req, res) {
     try{
       const {id} = req.body;
 
+      /* TODO: check email to see if expenseid belongs to user */
+
       const deletedExpense = await prisma.expense.delete({
         where:{
           id:id

@@ -8,6 +8,10 @@ export default async function handler(req, res) {
     
         /* TODO: validate inputs */
         
+        if(type === NULL || amount == NULL || date == NULL){
+          req.status(400).json({err: "Missing data needed in order to create the expense"})
+        }
+
         const user = await prisma.user.findFirst({where:{
             email:email
         }});

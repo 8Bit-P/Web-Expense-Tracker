@@ -7,14 +7,13 @@ import { options } from "./Configurations/LIneGraphConf";
 const MonthlyExpenseGraph = ({ expenses }) => {
   //GRAPH CONFIGURATION
   const createArrayRef = useRef(false);
-  const [labels, setLabels] = useState([])
+  const [labels, setLabels] = useState([]);
 
   function getDaysInCurrentMonth() {
     const date = new Date();
 
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   }
-
 
   //array creation for months
   useEffect(() => {
@@ -29,7 +28,7 @@ const MonthlyExpenseGraph = ({ expenses }) => {
     labels: labels,
     datasets: [
       {
-        label: "Monthly Expense",
+        label: "Daily Expense (€)",
         data: [0],
         backgroundColor: "#989BCD",
         borderColor: "#989BCD",
@@ -38,15 +37,10 @@ const MonthlyExpenseGraph = ({ expenses }) => {
     ],
   });
 
-  
-
   //End of graph configuration
 
   //current month expenses
   useEffect(() => {
-    console.log("loggin expenses");
-    console.log(expenses);
-
     const filteredExpenses = expenses.filter(
       (expense) =>
         new Date(expense.date).getMonth() === new Date().getMonth() &&
@@ -63,38 +57,38 @@ const MonthlyExpenseGraph = ({ expenses }) => {
     //substitute days with expenses on array with respective amounts
     for (let i = 0; i < filteredExpenses.length; i++) {
       const index = new Date(filteredExpenses[i].date).getDate();
-      finalMonthExpenses[index - 1] = filteredExpenses[i].amount;
+      finalMonthExpenses[index - 1] += filteredExpenses[i].amount;
     }
 
-    console.log(
+    /* console.log(
       "%c Final month expenses: ",
       "background: #222; color: #bada55"
     );
-    console.log(finalMonthExpenses);
+    console.log(finalMonthExpenses); */
 
     const newData = {
       labels: labels,
       datasets: [
         {
-          label: "Monthly Expense",
+          label: "Daily Expense (€)",
           data: finalMonthExpenses,
           backgroundColor: "#989BCD",
           borderColor: "#989BCD",
           borderWidth: 3,
+          tension:0.2,
         },
       ],
     };
 
-    setData(data => ({
+    setData((data) => ({
       ...data,
-      ...newData
+      ...newData,
     }));
-
   }, [expenses]);
 
   return (
-    <Box h="350px" w="650px" p="2" bgColor={"boxBackground"} ml="120px">
-      <Line data={data} options={options} redraw={true}/>
+    <Box w="75%" maxW="1000px" p="2" bgColor={"boxBackground"}>
+      <Line data={data} options={options} redraw={true} />
     </Box>
   );
 };

@@ -185,10 +185,9 @@ export default function Home({ user }) {
         <Text ml="120px" fontWeight={"500"}>
           ADDITIONAL INFORMATION
         </Text>
-        <HStack spacing="6">
+        <VStack align="left" spacing="6" pl="120px">
           <MonthlyExpenseGraph expenses={expenses}/>
-          <Box h="350px" w="650px" bgColor={"boxBackground"} ml="120px" />
-        </HStack>
+        </VStack>
       </VStack>
     </VStack>
   );
@@ -197,6 +196,7 @@ export default function Home({ user }) {
 import prisma from "../lib/prisma";
 import MonthlyExpenseGraph from "../components/graphs/MonthlyExpenseGraph";
 
+/* LOGIN HANDLING */
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   if (!session) {

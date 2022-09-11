@@ -186,8 +186,8 @@ export default function Home({ user }) {
           ADDITIONAL INFORMATION
         </Text>
         <HStack spacing="6">
-          <MonthlyExpenseGraph/>
-          <Box h="300px" w="600px" bgColor={"boxBackground"} ml="120px" />
+          <MonthlyExpenseGraph expenses={expenses}/>
+          <Box h="350px" w="650px" bgColor={"boxBackground"} ml="120px" />
         </HStack>
       </VStack>
     </VStack>

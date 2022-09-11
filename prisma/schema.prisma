@@ -24,7 +24,7 @@ model Expense {
   id      String       @id @default(uuid())
   date    DateTime     @default(now())
   concept String       @default("-")
-  type    ExpenseType?
+  type    ExpenseType
   amount  Float        @default(0.0)
 
   createdBy User   @relation(fields: [userId], references: [id])

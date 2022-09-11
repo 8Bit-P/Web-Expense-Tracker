@@ -27,7 +27,7 @@ const Navbar = ({
         <Text mt="7" color={page == 0 && "primary"}>Dashboard</Text>
       </Box>
 
-      <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={ page == 1 && "2px"} borderBottomColor="primary">
+      {/* <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={ page == 1 && "2px"} borderBottomColor="primary">
         <Text mt="7" color={ page == 1 && "primary"}>Graphics</Text>
       </Box>
 
@@ -37,7 +37,7 @@ const Navbar = ({
 
       <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={page == 3 && "2px"} borderBottomColor="primary">
         <Text mt="7" color={page == 3 &&  "primary"}>I guess</Text>
-      </Box>
+      </Box> */}
 
       <Spacer />
 

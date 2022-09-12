@@ -1,12 +1,26 @@
 import { Avatar, HStack, Spacer, Text, VStack,Box } from "@chakra-ui/react";
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 
 
 const Navbar = ({
   name = "Walter White",
-  balance = 0,
+  expenses = {},
   avatar = "https://cdn.elnacional.com/wp-content/uploads/2021/05/walter-white.jpg",
 }) => {
+
+    const [expended, setExpended] = useState(0)
+
+  useEffect(() => {
+
+    let tempExpendedSum = 0;
+
+    expenses.forEach(expense => {
+      tempExpendedSum += expense.amount
+    });
+
+    setExpended(tempExpendedSum.toFixed(2));
+  }, [expenses])
+  
 
   const [page, setPage] = useState(0)
 
@@ -47,7 +61,7 @@ const Navbar = ({
             {name}
           </Text>
           <Text fontStyle={"italic"} fontSize="sm">
-            Balance: {balance + "€"} {/* TODO: */}
+            Expended:<i style={{color:"rgba(250,0,0,0.8)"}}>{" " + expended +  "€"}</i>  
           </Text>
         </VStack>
         <Avatar src={avatar} referrerPolicy="no-referrer"/>

@@ -112,7 +112,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
                 borderColor={"whiteAlpha.600"}
                 type="text"
                 placeholder="Concept"
-                borderRadius={"xl"}
+                borderRadius={"md"}
                 maxLength={40}
                 onChange={updateConcept}
                 value={concept}
@@ -138,7 +138,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
                 borderColor={"whiteAlpha.600"}
                 type="number"
                 placeholder="Amount"
-                borderRadius={"xl"}
+                borderRadius={"md"}
                 onChange={updateAmount}
                 value={amount}
               />
@@ -166,7 +166,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
                 borderColor={"whiteAlpha.600"}
                 type="date"
                 placeholder="Date"
-                borderRadius={"xl"}
+                borderRadius={"md"}
                 onChange={updateDate}
                 value={date}
               />

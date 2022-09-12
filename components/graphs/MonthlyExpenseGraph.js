@@ -87,7 +87,7 @@ const MonthlyExpenseGraph = ({ expenses }) => {
   }, [expenses]);
 
   return (
-    <Box w="75%" maxW="1000px" p="2" bgColor={"boxBackground"}>
+    <Box w="75%" minWidth="500px" maxW="1000px" p="2" bgColor={"boxBackground"} borderRadius="md" borderWidth={"2px"} borderColor="primary">
       <Line data={data} options={options} redraw={true} />
     </Box>
   );

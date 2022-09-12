@@ -5,21 +5,22 @@ import {
   Text,
   Button,
   Box,
+  useDisclosure,
   Skeleton,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import ExpensesList from "../components/expenses/ExpensesList";
+import axios from "axios";
 
+import ExpensesList from "../components/expenses/ExpensesList";
 import Navbar from "../components/main/Navbar";
 import Pagination from "../components/main/Pagination";
 import Sidebar from "../components/main/Sidebar";
 
 import { useState, useContext, useEffect } from "react";
 import { UtilsContext } from "../context/UtilsContext";
-
 import { getSession } from "next-auth/react";
 
-import axios from "axios";
+
 
 export default function Home({ user }) {
   const utils = useContext(UtilsContext);
@@ -73,7 +74,7 @@ export default function Home({ user }) {
   const [totalPages, setTotalPages] = useState(1);
   const [currentExpenses, setCurrentExpenses] = useState([]);
 
-  const MAX_EXPENSES_DISPLAY = 4;
+  const MAX_EXPENSES_DISPLAY = 5;
 
   useEffect(() => {
     //each time page is changed update expenses
@@ -88,6 +89,18 @@ export default function Home({ user }) {
     );
     setCurrentExpenses(exp.slice(beginingIndex, endingIndex));
   };
+
+  /* INFO: SIDEBAR MODAL HOOK */
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  /* INFO: get full name Date */
+  function getFullNameDate(){
+    let date = new Date().toLocaleString('default', { month: 'long' });
+    let first = date.charAt(0).toUpperCase();
+    let rest = date.slice(1,date.length);
+
+    return first+rest + "-" + new Date().getFullYear();
+  }
 
   return (
     <VStack
@@ -108,8 +121,13 @@ export default function Home({ user }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar name={username} avatar={profilePicture} />
-      <Sidebar fetchExpenses={fetchExpenses} />
+      <Navbar name={username} avatar={profilePicture} expenses={expenses} />
+      <Sidebar
+        fetchExpenses={fetchExpenses}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
 
       <HStack w="100%" pt="100px" spacing="10">
         <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
@@ -161,7 +179,7 @@ export default function Home({ user }) {
             spacing="5"
           >
             <Skeleton w="100%" h="20px" />
-
+            <Skeleton w="100%" h="50px" />
             <Skeleton w="100%" h="50px" />
             <Skeleton w="100%" h="50px" />
             <Skeleton w="100%" h="50px" />
@@ -169,8 +187,9 @@ export default function Home({ user }) {
           </VStack>
         ) : (
           <ExpensesList
-            expenses={currentExpenses}
+            currentExpenses={currentExpenses}
             fetchExpenses={fetchExpenses}
+            onOpen={onOpen}
           />
         )}
 
@@ -181,12 +200,37 @@ export default function Home({ user }) {
         />
       </VStack>
 
-      <VStack align="left">
-        <Text ml="120px" fontWeight={"500"}>
+      <VStack align="left" spacing="10">
+        <Text ml="120px" fontWeight={"600"}>
           ADDITIONAL INFORMATION
         </Text>
+
+        <HStack align="left" pl="120px">
+          <Box
+            w="200px"
+            bgColor={"primary"}
+            borderRadius="md"
+            h="40px"
+            textAlign={"center"}
+            pt="2"
+            fontWeight={"600"}
+          >
+            Expenses this month
+          </Box>
+          <Box
+            w="200px"
+            bgColor={"primary"}
+            borderRadius="md"
+            h="40px"
+            textAlign={"center"}
+            pt="2"
+            fontWeight={"600"}
+          >
+            {getFullNameDate()}
+          </Box>
+        </HStack>
         <VStack align="left" spacing="6" pl="120px">
-          <MonthlyExpenseGraph expenses={expenses}/>
+          <MonthlyExpenseGraph expenses={expenses} />
         </VStack>
       </VStack>
     </VStack>

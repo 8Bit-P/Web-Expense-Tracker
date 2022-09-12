@@ -1,4 +1,4 @@
-import { VStack, IconButton, useDisclosure } from "@chakra-ui/react";
+import { VStack, IconButton, Tooltip } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGear,
@@ -13,11 +13,8 @@ import AddExpenseModal from "../expenses/AddExpenseModal";
 
 const MotionIconButton = motion(IconButton);
 
-const Sidebar = ({fetchExpenses}) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const Sidebar = ({fetchExpenses,isOpen, onOpen, onClose}) => {
   
-
-
   const goToConfig = () => {
     /* TODO: poner links  */
   };
@@ -35,6 +32,7 @@ const Sidebar = ({fetchExpenses}) => {
         bgColor={"boxBackground"}
       >
         {/* ADD NEW EXPENSE */}
+        <Tooltip label='New expense' placement='auto-end'>
         <MotionIconButton
           top="50%"
           color="#CC5476"
@@ -53,8 +51,9 @@ const Sidebar = ({fetchExpenses}) => {
             icon={faPlusCircle}
           />
         </MotionIconButton>
-
+        </Tooltip>
         {/* CONFIG */}
+        <Tooltip label='Configuration' placement='auto-end'>
         <MotionIconButton
           top="50%"
           color="#CC5476"
@@ -73,7 +72,9 @@ const Sidebar = ({fetchExpenses}) => {
             icon={faGear}
           />
         </MotionIconButton>
+        </Tooltip>
         {/* LOGOUT */}
+        <Tooltip label='Logout' placement='auto-end'>
         <MotionIconButton
           top="50%"
           color="#CC5476"
@@ -92,6 +93,7 @@ const Sidebar = ({fetchExpenses}) => {
             icon={faRightFromBracket}
           />
         </MotionIconButton>
+        </Tooltip>
       </VStack>
     </>
   );

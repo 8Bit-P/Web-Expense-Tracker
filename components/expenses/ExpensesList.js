@@ -8,6 +8,8 @@ import {
   IconButton,
   Box,
   useDisclosure,
+  Text,
+  Button,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,6 +28,7 @@ import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 
+/* TYPE TO ICON TRANSLATION */
 const ICONS = {
   FOOD: faBurger,
   DRINKS: faBeer,
@@ -35,16 +38,17 @@ const ICONS = {
   BILL: faReceipt,
 };
 
-const ExpensesList = ({ expenses, fetchExpenses }) => {
+const ExpensesList = ({ currentExpenses, fetchExpenses, onOpen: openNewExpenseModal }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedExpenseId, setSelectedExpenseId] = useState(null);
 
   const deleteExpense = (expenseId) => {
+    //set state to then pass it to the modal
     setSelectedExpenseId(expenseId);
     onOpen();
   };
 
-  /* TODO: add animation to slowly scale up or down from table height */
+  /* ADD: Filter by amount,date,type */
   return (
     <>
       <RemoveExpenseModal
@@ -61,7 +65,7 @@ const ExpensesList = ({ expenses, fetchExpenses }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{duration:1}}
+        transition={{ duration: 1 }}
       >
         <Table
           variant="unstyled"
@@ -77,8 +81,9 @@ const ExpensesList = ({ expenses, fetchExpenses }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {expenses.length !== 0 ? (
-              expenses.map((expense) => {
+
+            {currentExpenses.length !== 0 ? (
+              currentExpenses.map((expense) => {
                 return (
                   <Tr bgColor={"boxBackground"} key={expense.id}>
                     <Td>
@@ -142,7 +147,22 @@ const ExpensesList = ({ expenses, fetchExpenses }) => {
               })
             ) : (
               <Tr>
-                <Td>No expenses found, start by creating some!</Td>
+                <Td bgColor={"boxBackground"}>
+                  <Text
+                    background={
+                      "-webkit-linear-gradient(45deg,#C4DFC2, #8CBEDF)"
+                    }
+                    backgroundClip="text"
+                    fontSize={"lg"}
+                    fontWeight="700"
+                  >
+                    No expenses found, start by creating some!
+                    <Button colorScheme={"purple"} ml="5"  boxShadow="rgba(121, 108, 186, 0.35) 0px 5px 15px;" onClick={openNewExpenseModal}>New</Button>
+                  </Text>
+                </Td>
+                <Td bgColor={"boxBackground"}></Td>
+                <Td bgColor={"boxBackground"}></Td>
+                <Td bgColor={"boxBackground"}></Td>
               </Tr>
             )}
           </Tbody>

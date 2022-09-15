@@ -9,11 +9,7 @@ import {
   Progress,
 } from "@chakra-ui/react";
 
-import ExpensesList from "../expenses/ExpensesList";
-import Navbar from "./Navbar";
 import Pagination from "./Pagination";
-import Sidebar from "./Sidebar";
-import GeneralStatisticsGraph from "../graphs/GeneralStatisticsGraph";
 import MonthlyExpenseGraph from "../graphs/MonthlyExpenseGraph";
 import MobileNavbar from "./MobileNavbar";
 
@@ -40,7 +36,7 @@ const MobileDashBoard = ({
       />
 
       <VStack
-        w="80%"
+        w="90%"
         maxW="500px"
         h="200px"
         bgColor={"blackAlpha.500"}
@@ -55,6 +51,36 @@ const MobileDashBoard = ({
         <Progress size="xs" colorScheme={"purple"} value={10} borderRadius="30px"/>
         <Text>More text here I guess</Text>
       </VStack>
+
+      {/* INFO: expenses */}
+      <VStack align="left" pb="10">
+        {isExpensesLoading ? (
+          <VStack
+            pt="50px"
+            pb="25px"
+            w="80%"
+            maxW="1250px"
+            pl="120px"
+            spacing="5"
+          >
+            <Skeleton w="100%" h="20px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+            <Skeleton w="100%" h="50px" />
+          </VStack>
+        ) : (
+          <Text>new system needed</Text>
+        )}
+
+        <Pagination
+          total={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </VStack>
+
     </>
   );
 };

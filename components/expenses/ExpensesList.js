@@ -21,7 +21,7 @@ const MotionBox = motion(Box);
 const ExpensesList = ({
   currentExpenses,
   fetchExpenses,
-  onOpen: openNewExpenseModal,
+  onOpen: openNewExpenseModal
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedExpenseId, setSelectedExpenseId] = useState(null);

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Tr, Td, IconButton, Input, Spinner,Box } from "@chakra-ui/react";
+import { Tr, Td, IconButton, Input, Spinner, Box } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBurger,
@@ -74,16 +74,22 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
   return !isEditing ? (
     <Tr bgColor={"boxBackground"}>
       <Td>
-        <Box>
-
-        
-        <FontAwesomeIcon
-          style={{
-            width: "20px",
-            height: "20px",
-          }}
-          icon={ICONS[expense.type]}
-        />
+        <Box
+          bgColor={"#6A59A2"}
+          boxShadow="rgba(121, 108, 186, 0.35) 0px 3px 5px;"
+          w="35px"
+          h="35px"
+          borderRadius={"md"}
+          pt="2"
+        >
+          <FontAwesomeIcon
+            style={{
+              width: "20px",
+              height: "20px",
+              margin: "0 auto",
+            }}
+            icon={ICONS[expense.type]}
+          />
         </Box>
       </Td>
       <Td>{expense.concept}</Td>
@@ -137,13 +143,23 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
     /* INFO: EDITING MODE */
     <Tr bgColor={"boxBackground"} key={expense.id}>
       <Td>
-        <FontAwesomeIcon
-          style={{
-            width: "20px",
-            height: "20px",
-          }}
-          icon={ICONS[expense.type]}
-        />
+        <Box
+          bgColor={"#6A59A2"}
+          boxShadow="rgba(121, 108, 186, 0.35) 0px 3px 5px;"
+          w="35px"
+          h="35px"
+          borderRadius={"md"}
+          pt="2"
+        >
+          <FontAwesomeIcon
+            style={{
+              width: "20px",
+              height: "20px",
+              margin: "0 auto",
+            }}
+            icon={ICONS[expense.type]}
+          />
+        </Box>
       </Td>
       <Td>
         <Input

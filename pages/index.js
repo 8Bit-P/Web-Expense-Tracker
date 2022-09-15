@@ -1,8 +1,7 @@
 import { VStack, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import axios from "axios";
-
-import { useMediaQuery } from "@react-hook/media-query";
+import {useMediaQuery} from '@chakra-ui/react';
 import { useState, useContext, useEffect } from "react";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
@@ -11,8 +10,10 @@ import DesktopDashboard from "../components/main/DesktopDashboard";
 import MobileDashBoard from "../components/main/MobileDashBoard";
 
 export default function Home({ user }) {
-  const isLowRes = useMediaQuery("(max-width:900px)");
+  /* WARNING: PROBLEMS WITH HIDRATION */
+  const [isWideScreen] = useMediaQuery('(min-width: 900px)');
   const utils = useContext(UtilsContext);
+
 
   useEffect(() => {
     utils.email = user.email;
@@ -82,7 +83,7 @@ export default function Home({ user }) {
   /* INFO: COMPONENT */
   return (
     <VStack
-      align={isLowRes ? "center": "left"}
+      align={!isWideScreen ? "center": "left"}
       pb="50px"
       bgColor={"background"}
       h="100%"
@@ -99,7 +100,7 @@ export default function Home({ user }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!isLowRes ? (
+      {isWideScreen ? (
         <DesktopDashboard
           username={user.name}
           profilePicture={user.image}

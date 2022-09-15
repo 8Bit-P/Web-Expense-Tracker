@@ -13,7 +13,7 @@ import Image from "next/image";
 const MobileNavbar = ({
   name = "Walter White",
   expenses = {},
-  avatar = "https://cdn.elnacional.com/wp-content/uploads/2021/05/walter-white.jpg",
+  avatar,
 }) => {
   const [spent, setSpent] = useState(0);
 

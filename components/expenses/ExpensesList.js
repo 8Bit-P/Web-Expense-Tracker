@@ -5,40 +5,24 @@ import {
   Tr,
   Th,
   Td,
-  IconButton,
   Box,
   useDisclosure,
   Text,
   Button,
 } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBurger,
-  faMoneyBillTransfer,
-  faReceipt,
-  faMobileScreen,
-  faBeer,
-  faShoppingCart,
-  faPenToSquare,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { useState } from "react";
 import RemoveExpenseModal from "./RemoveExpenseModal";
 import { motion } from "framer-motion";
+import ExpenseItem from "./ExpenseItem";
 
 const MotionBox = motion(Box);
 
-/* TYPE TO ICON TRANSLATION */
-const ICONS = {
-  FOOD: faBurger,
-  DRINKS: faBeer,
-  CASUAL_SHOPPING: faShoppingCart,
-  ONLINE_SHOPPING: faMobileScreen,
-  FRIEND_TRANSFER: faMoneyBillTransfer,
-  BILL: faReceipt,
-};
-
-const ExpensesList = ({ currentExpenses, fetchExpenses, onOpen: openNewExpenseModal }) => {
+const ExpensesList = ({
+  currentExpenses,
+  fetchExpenses,
+  onOpen: openNewExpenseModal,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedExpenseId, setSelectedExpenseId] = useState(null);
 
@@ -81,68 +65,15 @@ const ExpensesList = ({ currentExpenses, fetchExpenses, onOpen: openNewExpenseMo
             </Tr>
           </Thead>
           <Tbody>
-
             {currentExpenses.length !== 0 ? (
               currentExpenses.map((expense) => {
                 return (
-                  <Tr bgColor={"boxBackground"} key={expense.id}>
-                    <Td>
-                      <FontAwesomeIcon
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                        }}
-                        icon={ICONS[expense.type]}
-                      />
-                    </Td>
-                    <Td>{expense.concept}</Td>
-                    <Td>
-                      {new Date(expense.date).toLocaleDateString("es-ES")}
-                    </Td>
-                    <Td isNumeric>{expense.amount + "€"}</Td>
-                    <Td>
-                      <IconButton
-                        w="20px"
-                        h="20px"
-                        bgColor={"transparent"}
-                        _hover={{
-                          backgroundColor: "transparent",
-                          color: "#cf3862",
-                        }}
-                        _active={{ background: "transparent" }}
-                        color="#CC5476"
-                      >
-                        <FontAwesomeIcon
-                          style={{
-                            width: "20px",
-                            height: "20px",
-                          }}
-                          icon={faPenToSquare}
-                        />
-                      </IconButton>
-
-                      <IconButton
-                        w="25px"
-                        h="25px"
-                        bgColor={"transparent"}
-                        _hover={{
-                          backgroundColor: "transparent",
-                          color: "#cf3862",
-                        }}
-                        _active={{ background: "transparent" }}
-                        color="#CC5476"
-                        onClick={() => deleteExpense(expense.id)}
-                      >
-                        <FontAwesomeIcon
-                          style={{
-                            width: "20px",
-                            height: "20px",
-                          }}
-                          icon={faTrash}
-                        />
-                      </IconButton>
-                    </Td>
-                  </Tr>
+                  <ExpenseItem
+                    key={expense.id}
+                    expense={expense}
+                    deleteExpense={deleteExpense}
+                    fetchExpenses={fetchExpenses}
+                  />
                 );
               })
             ) : (
@@ -157,7 +88,14 @@ const ExpensesList = ({ currentExpenses, fetchExpenses, onOpen: openNewExpenseMo
                     fontWeight="700"
                   >
                     No expenses found, start by creating some!
-                    <Button colorScheme={"purple"} ml="5"  boxShadow="rgba(121, 108, 186, 0.35) 0px 5px 15px;" onClick={openNewExpenseModal}>New</Button>
+                    <Button
+                      colorScheme={"purple"}
+                      ml="5"
+                      boxShadow="rgba(121, 108, 186, 0.35) 0px 5px 15px;"
+                      onClick={openNewExpenseModal}
+                    >
+                      New
+                    </Button>
                   </Text>
                 </Td>
                 <Td bgColor={"boxBackground"}></Td>

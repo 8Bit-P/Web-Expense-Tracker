@@ -1,4 +1,5 @@
 import { Avatar, HStack, Spacer, Text, VStack,Box } from "@chakra-ui/react";
+import Image from "next/image";
 import React,{useEffect, useState} from "react";
 
 
@@ -22,7 +23,6 @@ const Navbar = ({
   }, [expenses])
   
 
-  const [page, setPage] = useState(0)
 
   return (
     <HStack
@@ -35,10 +35,11 @@ const Navbar = ({
       zIndex={1}
       position="fixed"
     >
-      <Box w="40px" h="40px" bgColor={"primary"} borderRadius="lg"/>
+      
+      <Image src="/MyExpenseLogo.svg" width="45px" height="45px" style={{pointerEvents:"none"}}/>
 
-      <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={ page == 0 && "2px"} borderBottomColor="primary">
-        <Text mt="7" color={page == 0 && "primary"}>Dashboard</Text>
+      <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={"2px"} borderBottomColor="primary">
+        <Text mt="7" color={"primary"}>Dashboard</Text>
       </Box>
 
       {/* <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={ page == 1 && "2px"} borderBottomColor="primary">

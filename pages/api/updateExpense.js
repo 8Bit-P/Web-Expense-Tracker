@@ -3,15 +3,12 @@ import prisma from "../../lib/prisma";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { concept, expenseType: type, amount, date, email } = req.body;
+      const { concept, amount, date, email,id } = req.body;
+
 
       /* TODO: validate inputs */
 
-      if (type === NULL || amount == NULL || date == NULL) {
-        req
-          .status(400)
-          .json({ err: "Missing data needed in order to create the expense" });
-      }
+
 
       const user = await prisma.user.findFirst({
         where: {
@@ -24,16 +21,16 @@ export default async function handler(req, res) {
         req.status(400).json({ err: "User could not be found" });
       }
 
-      const userId = user.id;
-
       //create first the expense
-      const expense = await prisma.expense.create({
+
+      const expense = await prisma.expense.update({
+        where:{
+            id
+        },
         data: {
           date: new Date(date),
           concept,
-          type,
           amount: parseFloat(amount),
-          userId,
         },
       });
 

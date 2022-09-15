@@ -1,49 +1,35 @@
-import {
-  Heading,
-  HStack,
-  VStack,
-  Text,
-  Button,
-  Box,
-  useDisclosure,
-  Skeleton,
-} from "@chakra-ui/react";
+import { VStack, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import axios from "axios";
 
-import ExpensesList from "../components/expenses/ExpensesList";
-import Navbar from "../components/main/Navbar";
-import Pagination from "../components/main/Pagination";
-import Sidebar from "../components/main/Sidebar";
-
+import { useMediaQuery } from "@react-hook/media-query";
 import { useState, useContext, useEffect } from "react";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
 
-
+import DesktopDashboard from "../components/main/DesktopDashboard";
+import MobileDashBoard from "../components/main/MobileDashBoard";
 
 export default function Home({ user }) {
+  const isLowRes = useMediaQuery("(max-width:900px)");
   const utils = useContext(UtilsContext);
-
-  /* necessary? */
-  const [username, setUsername] = useState(user.name);
-  const [profilePicture, setProfilePicture] = useState(user.image);
 
   useEffect(() => {
     utils.email = user.email;
   }, [user]);
 
   //pagination
-
   const [expenses, setExpenses] = useState([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(true);
 
+  /* TODO: make into hook */
   const fetchExpenses = async () => {
     setIsExpensesLoading(true);
     axios
       .post("http://localhost:3000/api/getExpenses", { email: utils.email })
       .then((res) => {
         setExpenses(res.data);
+        /* SOME KIND OF SORTING METHOD */
         setIsExpensesLoading(false);
 
         //set corresponding pages
@@ -69,7 +55,7 @@ export default function Home({ user }) {
     fetchExpenses();
   }, []);
 
-  /* Expenses and pagination calculation */
+  /* INFO: Expenses and pagination calculation */
   const [currentPage, setCurrentPage] = useState(1); // 1 - total
   const [totalPages, setTotalPages] = useState(1);
   const [currentExpenses, setCurrentExpenses] = useState([]);
@@ -93,18 +79,10 @@ export default function Home({ user }) {
   /* INFO: SIDEBAR MODAL HOOK */
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  /* INFO: get full name Date */
-  function getFullNameDate(){
-    let date = new Date().toLocaleString('default', { month: 'long' });
-    let first = date.charAt(0).toUpperCase();
-    let rest = date.slice(1,date.length);
-
-    return first+rest + "-" + new Date().getFullYear();
-  }
-
+  /* INFO: COMPONENT */
   return (
     <VStack
-      align={"left"}
+      align={isLowRes ? "center": "left"}
       pb="50px"
       bgColor={"background"}
       h="100%"
@@ -121,124 +99,43 @@ export default function Home({ user }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar name={username} avatar={profilePicture} expenses={expenses} />
-      <Sidebar
-        fetchExpenses={fetchExpenses}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-      />
-
-      <HStack w="100%" pt="100px" spacing="10">
-        <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
-          <VStack align={"left"} spacing="0">
-            <Heading>Welcome to your</Heading>{" "}
-            <Heading
-              background={"-webkit-linear-gradient(45deg,#CC5476, #989BCD)"}
-              backgroundClip="text"
-            >
-              Dashboard!
-            </Heading>
-          </VStack>
-          <Text>
-            Take a general view of your expenses and manage some of your data
-            through this window
-          </Text>
-          <HStack>
-            <Button
-              w="45px"
-              h="45px"
-              bgColor={"primary"}
-              borderWidth="3px"
-              borderColor={"primary"}
-              _hover={{ backgroundColor: "transparent" }}
-              _active={{ backgroundColor: "transparent" }}
-              fontWeight="600"
-            >
-              <Heading mb="2">+</Heading>
-            </Button>
-            <Text color="primary" fontWeight={"400"}>
-              Add some goals for the month!
-            </Text>
-          </HStack>
-        </VStack>
-
-        <Box w="200px" h="300px" bgColor="customPurple" borderRadius={"30px"} />
-        <Box w="200px" h="300px" bgColor="customGreen" borderRadius={"30px"} />
-        <Box w="200px" h="300px" bgColor="customCyan" borderRadius={"30px"} />
-      </HStack>
-
-      <VStack align="left" pb="10">
-        {isExpensesLoading ? (
-          <VStack
-            pt="50px"
-            pb="25px"
-            w="80%"
-            maxW="1250px"
-            pl="120px"
-            spacing="5"
-          >
-            <Skeleton w="100%" h="20px" />
-            <Skeleton w="100%" h="50px" />
-            <Skeleton w="100%" h="50px" />
-            <Skeleton w="100%" h="50px" />
-            <Skeleton w="100%" h="50px" />
-            <Skeleton w="100%" h="50px" />
-          </VStack>
-        ) : (
-          <ExpensesList
-            currentExpenses={currentExpenses}
-            fetchExpenses={fetchExpenses}
-            onOpen={onOpen}
-          />
-        )}
-
-        <Pagination
-          total={totalPages}
+      {!isLowRes ? (
+        <DesktopDashboard
+          username={user.name}
+          profilePicture={user.image}
+          expenses={expenses}
+          fetchExpenses={fetchExpenses}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          isExpensesLoading={isExpensesLoading}
+          currentExpenses={currentExpenses}
+          totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
-      </VStack>
-
-      <VStack align="left" spacing="10">
-        <Text ml="120px" fontWeight={"600"}>
-          ADDITIONAL INFORMATION
-        </Text>
-
-        <HStack align="left" pl="120px">
-          <Box
-            w="200px"
-            bgColor={"primary"}
-            borderRadius="md"
-            h="40px"
-            textAlign={"center"}
-            pt="2"
-            fontWeight={"600"}
-          >
-            Expenses this month
-          </Box>
-          <Box
-            w="200px"
-            bgColor={"primary"}
-            borderRadius="md"
-            h="40px"
-            textAlign={"center"}
-            pt="2"
-            fontWeight={"600"}
-          >
-            {getFullNameDate()}
-          </Box>
-        </HStack>
-        <VStack align="left" spacing="6" pl="120px">
-          <MonthlyExpenseGraph expenses={expenses} />
-        </VStack>
-      </VStack>
+      ) : (
+        <MobileDashBoard
+          username={user.name}
+          profilePicture={user.image}
+          expenses={expenses}
+          fetchExpenses={fetchExpenses}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          isExpensesLoading={isExpensesLoading}
+          currentExpenses={currentExpenses}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </VStack>
   );
 }
 
+/* INFO: GetServerSideProps */
 import prisma from "../lib/prisma";
-import MonthlyExpenseGraph from "../components/graphs/MonthlyExpenseGraph";
 
 /* LOGIN HANDLING */
 export const getServerSideProps = async (context) => {

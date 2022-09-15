@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Tr, Td, IconButton, Input, Spinner } from "@chakra-ui/react";
+import { Tr, Td, IconButton, Input, Spinner,Box } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBurger,
@@ -74,6 +74,9 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
   return !isEditing ? (
     <Tr bgColor={"boxBackground"}>
       <Td>
+        <Box>
+
+        
         <FontAwesomeIcon
           style={{
             width: "20px",
@@ -81,6 +84,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
           }}
           icon={ICONS[expense.type]}
         />
+        </Box>
       </Td>
       <Td>{expense.concept}</Td>
       <Td>{new Date(expense.date).toLocaleDateString("es-ES")}</Td>
@@ -130,7 +134,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
       </Td>
     </Tr>
   ) : (
-    /* EDITING MODE */
+    /* INFO: EDITING MODE */
     <Tr bgColor={"boxBackground"} key={expense.id}>
       <Td>
         <FontAwesomeIcon
@@ -143,7 +147,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
       </Td>
       <Td>
         <Input
-          value={newConcept ? newConcept : expense.concept}
+          value={newConcept}
           onChange={(e) => setNewConcept(e.target.value)}
           variant="flushed"
           type="text"
@@ -152,11 +156,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
       </Td>
       <Td>
         <Input
-          value={
-            newDate
-              ? newDate
-              : new Date(expense.date).toISOString().split("T")[0]
-          }
+          value={newDate}
           onChange={(e) => setNewDate(e.target.value)}
           w="120px"
           variant="flushed"
@@ -165,7 +165,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
       </Td>
       <Td isNumeric>
         <Input
-          value={newAmount ? newAmount : expense.amount}
+          value={newAmount}
           onChange={(e) => setNewAmount(e.target.value)}
           w="50px"
           variant="flushed"

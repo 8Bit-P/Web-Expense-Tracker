@@ -44,6 +44,7 @@ const ExpensesList = ({
       <MotionBox
         w="80%"
         maxW="1250px"
+        minW="900px"
         pl="120px"
         pt="25px"
         initial={{ opacity: 0 }}

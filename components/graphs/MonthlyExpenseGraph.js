@@ -1,6 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { useState, useRef, useEffect } from "react";
-import { Chart as ChartJS } from "chart.js/auto";
+import { Chart as ChartJS } from "chart.js/auto"; /* WARNING: NEEDED IMPORT */
 import { Box } from "@chakra-ui/react";
 import { options } from "./Configurations/LIneGraphConf";
 
@@ -75,7 +75,7 @@ const MonthlyExpenseGraph = ({ expenses }) => {
           backgroundColor: "#989BCD",
           borderColor: "#989BCD",
           borderWidth: 3,
-          tension:0.2,
+          tension:0,
         },
       ],
     };
@@ -87,7 +87,7 @@ const MonthlyExpenseGraph = ({ expenses }) => {
   }, [expenses]);
 
   return (
-    <Box w="75%" minWidth="500px" maxW="1000px" p="2" bgColor={"boxBackground"} borderRadius="md" borderWidth={"2px"} borderColor="primary">
+    <Box w="75%" minWidth="700px" maxW="1000px" p="2" bgColor={"boxBackground"} borderRadius="md" borderWidth={"2px"} borderColor="primary">
       <Line data={data} options={options} redraw={true} />
     </Box>
   );

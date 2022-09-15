@@ -9,7 +9,7 @@ const Navbar = ({
   avatar = "https://cdn.elnacional.com/wp-content/uploads/2021/05/walter-white.jpg",
 }) => {
 
-    const [expended, setExpended] = useState(0)
+    const [spent, setSpent] = useState(0)
 
   useEffect(() => {
 
@@ -19,7 +19,7 @@ const Navbar = ({
       tempExpendedSum += expense.amount
     });
 
-    setExpended(tempExpendedSum.toFixed(2));
+    setSpent(tempExpendedSum.toFixed(2));
   }, [expenses])
   
 
@@ -62,7 +62,7 @@ const Navbar = ({
             {name}
           </Text>
           <Text fontStyle={"italic"} fontSize="sm">
-            Expended:<i style={{color:"rgba(250,0,0,0.8)"}}>{" " + expended +  "€"}</i>  
+            Spent:<i style={{color:"rgba(250,0,0,0.8)"}}>{" " + spent +  "€"}</i>  
           </Text>
         </VStack>
         <Avatar src={avatar} referrerPolicy="no-referrer"/>

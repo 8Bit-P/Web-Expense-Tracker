@@ -34,6 +34,10 @@ const RemoveExpenseModal = ({ isOpen, onClose, fetchExpenses, expenseId }) => {
         setIsLoading(false);
       })
       .then(() => {
+        onClose();
+        setError(null);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };

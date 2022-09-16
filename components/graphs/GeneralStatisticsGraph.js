@@ -8,7 +8,7 @@ const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
 const MotionText = motion(Text);
 
-const GeneralStatisticsGraph = () => {
+const GeneralStatisticsGraph = ({expenses}) => {
 
   function getDayOfYear(date = new Date()) {
     const timestamp1 = Date.UTC(
@@ -25,6 +25,54 @@ const GeneralStatisticsGraph = () => {
     return differenceInDays;
   }
 
+
+  function getMonthlySpent(){
+
+    let total = 0;
+
+    if(expenses){
+      expenses.forEach(expense => {
+        let expenseDate = new Date(expense.date);
+        if(expenseDate.getMonth() === new Date().getMonth()){
+          total += expense.amount;
+        }
+      })
+    }
+
+    return total;
+  }
+
+  function getYearlySpent(){
+
+    let total = 0;
+
+    if(expenses){
+      expenses.forEach(expense => {
+        let expenseDate = new Date(expense.date);
+        if(expenseDate.getFullYear() === new Date().getFullYear()){
+          total += expense.amount;
+        }
+      })
+    }
+
+    return total;
+  }
+
+  function getMaxAmount(){
+    
+    let best = 0;
+    
+    if(expenses){
+      expenses.forEach(expense => {
+        let expenseDate = new Date(expense.date);
+        if(expenseDate.getFullYear() === new Date().getFullYear() && expense.amount > best){
+          best = expense.amount;
+        }
+      })
+    }
+
+    return best;
+  }
 
   return (
     <MotionBox
@@ -100,7 +148,7 @@ const GeneralStatisticsGraph = () => {
             fontSize={"lg"}
             fontWeight="600"
           >
-            This month Expenses: <i style={{ color: "#6A59A2" }}>50 €</i>
+            This month Expenses: <i style={{ color: "#6A59A2" }}>{getMonthlySpent()} €</i>
           </MotionText>
         </HStack>
 
@@ -147,7 +195,7 @@ const GeneralStatisticsGraph = () => {
             fontSize={"lg"}
             fontWeight="600"
           >
-            This year Expenses: <i style={{ color: "#39AFE2" }}>20.3 €</i>
+            This year Expenses: <i style={{ color: "#39AFE2" }}>{getYearlySpent()} €</i>
           </MotionText>
         </HStack>
 
@@ -185,7 +233,7 @@ const GeneralStatisticsGraph = () => {
             fontSize={"lg"}
             fontWeight="600"
           >
-            Top expense this year: <i style={{ color: "#3FC4B7" }}>200 €</i>
+            Top expense this year: <i style={{ color: "#3FC4B7" }}>{getMaxAmount()} €</i>
           </MotionText>
         </HStack>
       </VStack>

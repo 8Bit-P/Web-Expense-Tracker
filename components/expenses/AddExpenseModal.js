@@ -77,6 +77,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
         setExpenseType("NONE");
         fetchExpenses();
         onClose(); //close the modal
+        setError(null);
       })
       .catch((err) => {
         console.log(err);

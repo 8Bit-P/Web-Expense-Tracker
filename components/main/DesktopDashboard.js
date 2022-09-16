@@ -82,7 +82,7 @@ const DesktopDashboard = ({
           </HStack>
         </VStack>
 
-        <GeneralStatisticsGraph />
+        <GeneralStatisticsGraph expenses={expenses}/>
       </HStack>
 
       <VStack align="left" pb="10">

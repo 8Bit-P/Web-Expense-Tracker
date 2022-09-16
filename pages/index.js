@@ -1,9 +1,9 @@
 import { VStack, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import axios from "axios";
-import {useMediaQuery} from '@chakra-ui/react';
-import { useState, useContext, useEffect } from "react";
 import useExpenses from "../hooks/useExpenses";
+import { useMediaQuery } from "@chakra-ui/react";
+import { useState, useContext, useEffect } from "react";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
 
@@ -11,60 +11,27 @@ import DesktopDashboard from "../components/main/DesktopDashboard";
 import MobileDashBoard from "../components/main/MobileDashBoard";
 
 export default function Home({ user }) {
-
-  const [isWideScreen] = useMediaQuery('(min-width: 900px)');
+  const [isWideScreen] = useMediaQuery("(min-width: 900px)");
   const utils = useContext(UtilsContext);
 
-  /* INFO: make it available for context */
   useEffect(() => {
     utils.email = user.email;
   }, [user]);
 
   //pagination
 
+  const {
+    expenses,
+    isExpensesLoading,
+    error,
+    fetchExpenses,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    currentExpenses,
+    adjustCurrentExpenses
+  } = useExpenses();
 
-  const [expenses, setExpenses] = useState([]);
-  const [isExpensesLoading, setIsExpensesLoading] = useState(true);
-
-  /* TODO: make into hook */
-  const fetchExpenses = async () => {
-    setIsExpensesLoading(true);
-    axios
-      .post("http://localhost:3000/api/getExpenses", { email: utils.email })
-      .then((res) => {
-        setExpenses(res.data);
-        /* SOME KIND OF SORTING METHOD */
-        setIsExpensesLoading(false);
-
-        //set corresponding pages
-        let tempTotalPages = Math.max(
-          Math.ceil(res.data.length / MAX_EXPENSES_DISPLAY),
-          1
-        );
-        setTotalPages(tempTotalPages);
-        adjustCurrentExpenses(res.data);
-
-        if (currentPage > tempTotalPages) {
-          let temp = currentPage - 1;
-          setCurrentPage(temp);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  //load expenses once page has loaded
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
-
-  /* INFO: Expenses and pagination calculation */
-  const [currentPage, setCurrentPage] = useState(1); // 1 - total
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentExpenses, setCurrentExpenses] = useState([]);
-
-  const MAX_EXPENSES_DISPLAY = 5;
 
   useEffect(() => {
     //each time page is changed update expenses
@@ -72,14 +39,7 @@ export default function Home({ user }) {
     if (!isExpensesLoading) adjustCurrentExpenses(expenses);
   }, [currentPage]);
 
-  const adjustCurrentExpenses = (exp) => {
-    const beginingIndex = (currentPage - 1) * MAX_EXPENSES_DISPLAY;
-    const endingIndex = Math.min(
-      beginingIndex + MAX_EXPENSES_DISPLAY,
-      exp.length
-    );
-    setCurrentExpenses(exp.slice(beginingIndex, endingIndex));
-  };
+  
 
   /* INFO: SIDEBAR MODAL HOOK */
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,7 +47,7 @@ export default function Home({ user }) {
   /* INFO: COMPONENT */
   return (
     <VStack
-      align={!isWideScreen ? "center": "left"}
+      align={!isWideScreen ? "center" : "left"}
       pb="50px"
       bgColor={"background"}
       h="100%"

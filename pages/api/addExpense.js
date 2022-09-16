@@ -5,9 +5,11 @@ export default async function handler(req, res) {
     try {
       const { concept, expenseType: type, amount, date, email } = req.body;
 
+      /* TODO: ADD JSON WEB TOKEN */
       /* TODO: validate inputs */
+      /* console.log(concept, type, amount, date, email) */
 
-      if (type === NULL || amount == NULL || date == NULL) {
+      if (!concept || !type || !amount || !date) {
         req
           .status(400)
           .json({ err: "Missing data needed in order to create the expense" });

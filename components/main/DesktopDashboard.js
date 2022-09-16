@@ -48,8 +48,8 @@ const DesktopDashboard = ({
         onClose={onClose}
       />
 
-      <HStack w="100%" pt="100px" spacing="20">
-        <VStack align="left" spacing="5" maxW={"400px"} ml="120px">
+      <HStack w="100%" pt="100px" spacing="20" align={"top"}>
+        <VStack align="left" spacing="5" maxW={"400px"} ml="120px" mt="10">
           <VStack align={"left"} spacing="0">
             <Heading>Welcome to your</Heading>{" "}
             <Heading

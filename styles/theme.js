@@ -11,9 +11,9 @@ const colors = {
   primary: "#CC5476",
   secondary: "#545665",
   fontColor:"#DADBE0",
-  customPurple:"#989BCD",
-  customCyan:"#8CBEDF",
-  customGreen:"#C4DFC2",
+  customPurple:"#6A59A2",
+  customCyan:"#39AFE2",
+  customGreen:"#3FC4B7",
   modal:"#131923",
 };
 

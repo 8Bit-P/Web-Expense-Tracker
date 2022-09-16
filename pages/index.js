@@ -3,6 +3,7 @@ import Head from "next/head";
 import axios from "axios";
 import {useMediaQuery} from '@chakra-ui/react';
 import { useState, useContext, useEffect } from "react";
+import useExpenses from "../hooks/useExpenses";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
 
@@ -10,16 +11,18 @@ import DesktopDashboard from "../components/main/DesktopDashboard";
 import MobileDashBoard from "../components/main/MobileDashBoard";
 
 export default function Home({ user }) {
-  /* WARNING: PROBLEMS WITH HIDRATION */
+
   const [isWideScreen] = useMediaQuery('(min-width: 900px)');
   const utils = useContext(UtilsContext);
 
-
+  /* INFO: make it available for context */
   useEffect(() => {
     utils.email = user.email;
   }, [user]);
 
   //pagination
+
+
   const [expenses, setExpenses] = useState([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(true);
 
@@ -65,6 +68,7 @@ export default function Home({ user }) {
 
   useEffect(() => {
     //each time page is changed update expenses
+    /* TODO: check if if is neccessary */
     if (!isExpensesLoading) adjustCurrentExpenses(expenses);
   }, [currentPage]);
 

@@ -65,7 +65,7 @@ const Navbar = ({
             Spent:<i style={{color:"rgba(250,0,0,0.8)"}}>{" " + spent +  "€"}</i>  
           </Text>
         </VStack>
-        <Avatar src={avatar} referrerPolicy="no-referrer"/>
+        <Avatar src={avatar} borderRadius="lg" referrerPolicy="no-referrer"/>
         <Box h="10px" w="10px" transform={"rotate(45deg)"} bgColor="customPurple" cursor={"pointer"}>
           <Box h="6px" w="6px" margin={"0 auto"} top="50%" left="50%" position={"absolute"} transform={"translate(-50%, -50%)"} bgColor="primary"/>
         </Box>

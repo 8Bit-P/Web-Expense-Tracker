@@ -14,6 +14,8 @@ const colors = {
   customPurple:"#6A59A2",
   customCyan:"#39AFE2",
   customGreen:"#3FC4B7",
+  customBlue:"#2F52D1",
+  customPink:"#C12D90",
   modal:"#131923",
 };
 

@@ -21,7 +21,7 @@ const MotionBox = motion(Box);
 const ExpensesList = ({
   currentExpenses,
   fetchExpenses,
-  onOpen: openNewExpenseModal
+  onOpen: openNewExpenseModal,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedExpenseId, setSelectedExpenseId] = useState(null);
@@ -88,7 +88,7 @@ const ExpensesList = ({
                     fontSize={"lg"}
                     fontWeight="700"
                   >
-                    No expenses found, start by creating some!
+                    No expenses found, try creating one!
                     <Button
                       colorScheme={"purple"}
                       ml="5"

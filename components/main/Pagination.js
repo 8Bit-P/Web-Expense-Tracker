@@ -10,7 +10,8 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const MotionButton = motion(Button);
 
-const Pagination = ({ total = 1, currentPage, setCurrentPage }) => {
+const Pagination = ({ total = 1, currentPage, setCurrentPage,isMobile=false }) => {
+  /* TODO: make hook  */
   const MAX_PAGES = 7;
   const POINTER_POSITIONS = [0, 44, 88, 132, 176, 220, 264];
 
@@ -220,7 +221,7 @@ const Pagination = ({ total = 1, currentPage, setCurrentPage }) => {
   };
 
   return (
-    <HStack pl="120px" spacing="1">
+    <HStack pl={!isMobile && "120px" } spacing="1" transform={isMobile && pages.length > 5 && "scale(0.9)"}>
       {/* 4, 48, 92... */}
       <MotionButton
         position={"absolute"}

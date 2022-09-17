@@ -53,7 +53,7 @@ export default function Home({ user }) {
       h="100%"
       minH="100vh"
       color="fontColor"
-      spacing="10"
+      spacing={isWideScreen ? 10 : 5}
     >
       <Head>
         <title>MyExpenses - Home</title>
@@ -131,7 +131,7 @@ export const getServerSideProps = async (context) => {
       data: {
         username: user.name,
         email: user.email,
-        balance: 0,
+        monthlyLimit: 0,
       },
     });
   }

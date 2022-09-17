@@ -77,7 +77,7 @@ const DesktopDashboard = ({
               <Heading mb="2">+</Heading>
             </Button>
             <Text color="primary" fontWeight={"400"}>
-              Track and add expense goals for the month!
+              Update your monthly expenses limit!
             </Text>
           </HStack>
         </VStack>

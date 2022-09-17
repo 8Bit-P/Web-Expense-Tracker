@@ -8,67 +8,65 @@ const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
 const MotionText = motion(Text);
 
-const GeneralStatisticsGraph = ({expenses}) => {
-
+const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
   function getDayOfYear(date = new Date()) {
     const timestamp1 = Date.UTC(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate(),
+      date.getDate()
     );
     const timestamp2 = Date.UTC(date.getFullYear(), 0, 0);
-  
+
     const differenceInMilliseconds = timestamp1 - timestamp2;
-  
+
     const differenceInDays = differenceInMilliseconds / 1000 / 60 / 60 / 24;
-  
+
     return differenceInDays;
   }
 
-
-  function getMonthlySpent(){
-
+  function getMonthlySpent() {
     let total = 0;
 
-    if(expenses){
-      expenses.forEach(expense => {
+    if (expenses) {
+      expenses.forEach((expense) => {
         let expenseDate = new Date(expense.date);
-        if(expenseDate.getMonth() === new Date().getMonth()){
+        if (expenseDate.getMonth() === new Date().getMonth()) {
           total += expense.amount;
         }
-      })
+      });
     }
 
     return total;
   }
 
-  function getYearlySpent(){
-
+  function getYearlySpent() {
     let total = 0;
 
-    if(expenses){
-      expenses.forEach(expense => {
+    if (expenses) {
+      expenses.forEach((expense) => {
         let expenseDate = new Date(expense.date);
-        if(expenseDate.getFullYear() === new Date().getFullYear()){
+        if (expenseDate.getFullYear() === new Date().getFullYear()) {
           total += expense.amount;
         }
-      })
+      });
     }
 
     return total;
   }
 
-  function getMaxAmount(){
-    
+  function getMaxAmount() {
     let best = 0;
-    
-    if(expenses){
-      expenses.forEach(expense => {
+
+    if (expenses) {
+      expenses.forEach((expense) => {
         let expenseDate = new Date(expense.date);
-        if(expenseDate.getFullYear() === new Date().getFullYear() && expense.amount > best){
+        if (
+          expenseDate.getFullYear() === new Date().getFullYear() &&
+          expense.amount > best
+        ) {
           best = expense.amount;
         }
-      })
+      });
     }
 
     return best;
@@ -76,27 +74,42 @@ const GeneralStatisticsGraph = ({expenses}) => {
 
   return (
     <MotionBox
-      w="35%"
-      maxW="600px"
       h="300px"
+      maxW="500px"
+      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px;"
       bgColor="blackAlpha.500"
       borderRadius="30px"
       transformOrigin={"topLeft"}
       p="5"
       initial={{ y: 30, opacity: 0 }}
-      animate={{
-        opacity: [0, 1, 1],
-        height: ["25px", "150px", "300px"],
-        width: ["150px", "150px", "500px"],
-      }}
+      animate={
+        !isMobile
+          ? {
+              opacity: [0, 1, 1],
+              height: ["25px", "150px", "300px"],
+              width: ["150px", "150px", "500px"],
+            }
+          : {
+              opacity: [0, 1, 1],
+              height: ["25px", "150px", "300px"],
+              width: ["40%", "40%", "90%"],
+            }
+      }
       transition={{ duration: 3, delay: 1 }}
     >
       <MotionText
         initial={{ y: 10, x: -5 }}
-        animate={{
-          x: [-5, -5, 300],
-          y: [-15, 5, 5],
-        }}
+        animate={
+          !isMobile
+            ? {
+                x: [-5, -5, 300],
+                y: [-15, 5, 5],
+              }
+            : {
+                opacity:[0,1],
+                marginLeft:"30px"
+              }
+        }
         transition={{ duration: 3, delay: 1.2 }}
         fontSize={"xl"}
         fontWeight="700"
@@ -136,7 +149,11 @@ const GeneralStatisticsGraph = ({expenses}) => {
               />
             </Box>
             <Text userSelect={"none"} position="absolute" pt="15px" pl="15px">
-              {new Date(new Date().getMonth(),new Date().getFullYear(),0).getDate()}
+              {new Date(
+                new Date().getMonth(),
+                new Date().getFullYear(),
+                0
+              ).getDate()}
             </Text>
           </MotionVStack>
           <MotionText
@@ -145,10 +162,11 @@ const GeneralStatisticsGraph = ({expenses}) => {
               opacity: 1,
             }}
             transition={{ duration: 0.5, delay: 5 }}
-            fontSize={"lg"}
+            fontSize={!isMobile ? "lg" : "15px"}
             fontWeight="600"
           >
-            This month Expenses: <i style={{ color: "#6A59A2" }}>{getMonthlySpent()} €</i>
+            This month Expenses:{" "}
+            <i style={{ color: "#6A59A2" }}>{getMonthlySpent()} €</i>
           </MotionText>
         </HStack>
 
@@ -192,10 +210,11 @@ const GeneralStatisticsGraph = ({expenses}) => {
               opacity: 1,
             }}
             transition={{ duration: 0.5, delay: 5.2 }}
-            fontSize={"lg"}
+            fontSize={!isMobile ? "lg" : "15px"}
             fontWeight="600"
           >
-            This year Expenses: <i style={{ color: "#39AFE2" }}>{getYearlySpent()} €</i>
+            This year Expenses:{" "}
+            <i style={{ color: "#39AFE2" }}>{getYearlySpent()} €</i>
           </MotionText>
         </HStack>
 
@@ -230,10 +249,11 @@ const GeneralStatisticsGraph = ({expenses}) => {
               opacity: 1,
             }}
             transition={{ duration: 0.5, delay: 5.4 }}
-            fontSize={"lg"}
+            fontSize={!isMobile ? "lg" : "15px"}
             fontWeight="600"
           >
-            Top expense this year: <i style={{ color: "#3FC4B7" }}>{getMaxAmount()} €</i>
+            Top expense this year:{" "}
+            <i style={{ color: "#3FC4B7" }}>{getMaxAmount()} €</i>
           </MotionText>
         </HStack>
       </VStack>

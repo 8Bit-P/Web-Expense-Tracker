@@ -39,6 +39,7 @@ const MonthlyExpenseGraph = ({ expenses, isLowRes = false }) => {
 
   //End of graph configuration
 
+  /* TODO: usememo to prevent loading everytime */
   //current month expenses
   useEffect(() => {
     const filteredExpenses = expenses.filter(

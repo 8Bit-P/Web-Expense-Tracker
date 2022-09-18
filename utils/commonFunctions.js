@@ -1,4 +1,4 @@
-import { LONG_MONTHS, MONTHS, COLORS, BOX_SHADOWS } from "./constants";
+import { LONG_MONTHS, MONTHS } from "./constants";
 
 export function getLongMonth() {
   let monthDay = new Date().getMonth();
@@ -37,7 +37,7 @@ export function getMonthlySpent(exp) {
     });
   }
 
-  return total;
+  return total.toFixed(2);
 }
 
 export function getYearlySpent(exp) {
@@ -52,7 +52,7 @@ export function getYearlySpent(exp) {
     });
   }
 
-  return total;
+  return total.toFixed(2);
 }
 
 export function getMaxAmount(exp) {
@@ -70,5 +70,30 @@ export function getMaxAmount(exp) {
     });
   }
 
-  return best;
+  return best.toFixed(2);
+}
+
+/* INFO: formats date in 12,Sep 2022 */
+export function formatDate(date) {
+  let formatedDate = "";
+  let convertedDate = new Date(date);
+
+  formatedDate =
+    convertedDate.getDate() +
+    ", " +
+    MONTHS[convertedDate.getMonth()] +
+    " " +
+    convertedDate.getFullYear();
+
+  return formatedDate;
+}
+
+/* INFO: slices text to fit in x characters */
+export function sliceConcept(concept){
+  let words = concept.split(" ");
+  if(words[0].length < 10){
+      return words[0]
+  }else{
+      return concept.slice(0,7) + "...";
+  }
 }

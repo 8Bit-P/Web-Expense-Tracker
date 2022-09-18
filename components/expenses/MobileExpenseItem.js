@@ -1,5 +1,13 @@
-import { Box, HStack, VStack, Text, Spacer } from "@chakra-ui/react";
-import { ChevronDownIcon,ChevronUpIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  HStack,
+  VStack,
+  Text,
+  Spacer,
+  useMediaQuery,
+  IconButton,
+} from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,8 +17,11 @@ import {
   faMobileScreen,
   faBeer,
   faShoppingCart,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion, useAnimationControls } from "framer-motion";
+import { COLORS, BOX_SHADOWS } from "../../utils/constants.js";
+import { formatDate, sliceConcept } from "../../utils/commonFunctions.js";
 
 const MotionBox = motion(Box);
 
@@ -23,63 +34,8 @@ const ICONS = {
   BILL: faReceipt,
 };
 
-/* TODO: MAKE BIG FILE WITH STYLES AND FUNCTIONS (UTILS) */
-const COLORS = {
-  FOOD: "primary",
-  DRINKS: "customGreen",
-  CASUAL_SHOPPING: "customPurple",
-  ONLINE_SHOPPING: "customCyan",
-  FRIEND_TRANSFER: "customBlue",
-  BILL: "customPink",
-};
-
-const BOX_SHADOWS = {
-  FOOD: "204, 84, 118",
-  DRINKS: "63, 196, 183",
-  CASUAL_SHOPPING: "106, 89, 162",
-  ONLINE_SHOPPING: "57, 175, 226",
-  FRIEND_TRANSFER: "47, 82, 209",
-  BILL: "193, 45, 144",
-};
-
-const MONTHS = [
-  "Ene",
-  "Feb",
-  "Mar",
-  "Abr",
-  "May",
-  "Jun",
-  "Jul",
-  "Ago",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dic",
-];
-
-const MobileExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
-  function formatDate(date) {
-    let formatedDate = "";
-    let convertedDate = new Date(date);
-
-    formatedDate =
-      convertedDate.getDate() +
-      ", " +
-      MONTHS[convertedDate.getMonth()] +
-      " " +
-      convertedDate.getFullYear();
-
-    return formatedDate;
-  }
-
-  function sliceConcept(concept){
-    let words = concept.split(" ");
-    if(words[0].length < 12){
-        return words[0]
-    }else{
-        return concept.slice(0,7) + "...";
-    }
-  }
+const MobileExpenseItem = ({ expense, deleteExpense }) => {
+  const [isSmallScreen] = useMediaQuery("(min-width: 370px)");
 
   /* INFO: animation controls for accordion */
 
@@ -90,7 +46,7 @@ const MobileExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
     if (isExtended) {
       controls.start({ height: "60px" });
     } else {
-      controls.start({ height: "90px" });
+      controls.start({ height: "120px" });
     }
 
     setIsExtended(!isExtended);
@@ -133,14 +89,33 @@ const MobileExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
           </Text>
         </VStack>
         <Spacer />
-        <Text fontSize={"15px"} fontWeight="400">
+        <Text fontSize={!isSmallScreen ? "12px" : "15px"} fontWeight="400">
           {formatDate(expense.date)}
         </Text>
-        {isExtended ? <ChevronUpIcon fontSize="xl"/> : <ChevronDownIcon fontSize="xl"/>}
-        
+        {isExtended ? (
+          <ChevronUpIcon fontSize="xl" />
+        ) : (
+          <ChevronDownIcon fontSize="xl" />
+        )}
       </HStack>
 
-      {isExtended && <Text ml="2" mt="2" fontWeight={"300"} color="whiteAlpha.800">{expense.concept}</Text>}
+      {isExtended && (
+        <>
+          <Text ml="2" mt="2" fontWeight={"300"} color="whiteAlpha.800">
+            {expense.concept}
+          </Text>
+
+          <HStack w="100%">
+            <Spacer />
+            <IconButton zIndex={10} size="sm" colorScheme={"pink"} onClick={() => deleteExpense(expense.id)}>
+              <FontAwesomeIcon
+                style={{ height: "15px", width: "15px" }}
+                icon={faTrash}
+              />
+            </IconButton>
+          </HStack>
+        </>
+      )}
     </MotionBox>
   );
 };

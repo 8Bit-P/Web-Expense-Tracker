@@ -3,12 +3,14 @@ import {
   Text,
   Box,
   Spinner,
-  Progress,
   Button,
-  useDisclosure
+  HStack,
+  Spacer,
 } from "@chakra-ui/react";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 import Pagination from "./Pagination";
 import MobileNavbar from "./MobileNavbar";
@@ -35,27 +37,51 @@ const MobileDashBoard = ({
   onClose,
 }) => {
 
+  /* INFO: expense removing method */
+  const [error, setError] = useState();
 
-
+  const deleteExpense = (expenseId) => {
+    axios
+      .post("http://localhost:3000/api/removeExpense", { id: expenseId })
+      .then(() => {
+        fetchExpenses();
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err);
+      })
+      .then(() => {
+        onClose();
+        setError(null);
+      })
+      
+  };
 
   return (
     <>
-      <AddExpenseModal isOpen={isOpen} onClose={onClose} fetchExpenses={fetchExpenses} isMobile={true}/>
+      <AddExpenseModal
+        isOpen={isOpen}
+        onClose={onClose}
+        fetchExpenses={fetchExpenses}
+        isMobile={true}
+      />
       <MobileNavbar
         name={username}
         avatar={profilePicture}
         expenses={expenses}
       />
-      
-      <MonthlyLimitGraph expenses={expenses}/>
+
+      <MonthlyLimitGraph expenses={expenses} />
 
       <GeneralStatisticsGraph isMobile={true} expenses={expenses} />
 
-      <Box w="90%" maxWidth={"500px"}>
+      <HStack w="90%" maxWidth={"500px"}>
         <Text color="whiteAlpha.700" fontWeight={"600"} pt="10" align="left">
           Daily Spends
         </Text>
-      </Box>
+        <Spacer/>
+        <Text color="whiteAlpha.700" fontWeight={"400"}  pt="10" pr="5">Sort by</Text>
+      </HStack>
       {/* INFO: expenses */}
 
       <MotionVStack
@@ -77,7 +103,9 @@ const MobileDashBoard = ({
         ) : currentExpenses.length === 0 ? (
           <VStack>
             <Text fontWeight="600">No expenses found, try creating one!</Text>{" "}
-            <Button onClick={onOpen} colorScheme="purple">New Expense</Button>
+            <Button onClick={onOpen} colorScheme="purple">
+              New Expense
+            </Button>
           </VStack>
         ) : (
           currentExpenses.map((expense) => {
@@ -85,7 +113,7 @@ const MobileDashBoard = ({
               <MobileExpenseItem
                 key={expense.id}
                 expense={expense}
-                fetchExpenses={fetchExpenses}
+                deleteExpense={deleteExpense}
               />
             );
           })
@@ -99,7 +127,7 @@ const MobileDashBoard = ({
         isMobile={true}
       />
 
-      <MobileMenu onOpen={onOpen}/>
+      <MobileMenu onOpen={onOpen} />
     </>
   );
 };

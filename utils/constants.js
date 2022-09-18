@@ -1,16 +1,16 @@
 const LONG_MONTHS = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const COLORS = {
@@ -32,18 +32,18 @@ const BOX_SHADOWS = {
 };
 
 const MONTHS = [
-  "Ene",
+  "Jan",
   "Feb",
   "Mar",
-  "Abr",
+  "Apr",
   "May",
   "Jun",
   "Jul",
-  "Ago",
+  "Aug",
   "Sept",
   "Oct",
   "Nov",
-  "Dic",
+  "Dec",
 ];
 
 export {LONG_MONTHS,MONTHS,COLORS,BOX_SHADOWS}

@@ -88,7 +88,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
 
   /* TODO: MAKE IT LOOK BETTER */
   return (
-    <Modal size={isMobile && "sm"} isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
+    <Modal size={isMobile ? "sm" : "md"} isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
       <ModalContent textAlign={"center"} bgColor={"modal"} color="fontColor">
         <ModalHeader mt="5">New Expense</ModalHeader>

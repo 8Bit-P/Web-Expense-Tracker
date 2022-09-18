@@ -31,7 +31,7 @@ import {
 import axios from "axios";
 import { UtilsContext } from "../../context/UtilsContext";
 
-const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
+const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
   const utils = useContext(UtilsContext);
 
   const [expenseType, setExpenseType] = useState();
@@ -86,8 +86,9 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
       });
   };
 
+  /* TODO: MAKE IT LOOK BETTER */
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
+    <Modal size={isMobile && "sm"} isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
       <ModalContent textAlign={"center"} bgColor={"modal"} color="fontColor">
         <ModalHeader mt="5">New Expense</ModalHeader>
@@ -102,7 +103,7 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses }) => {
                   <FontAwesomeIcon
                     style={{
                       width: "20px",
-                      height: "20px",
+                      height: "20px"
                     }}
                     icon={faNoteSticky}
                   />

@@ -1,28 +1,23 @@
-import { Avatar, HStack, Spacer, Text, VStack,Box } from "@chakra-ui/react";
+import { Avatar, HStack, Spacer, Text, VStack, Box } from "@chakra-ui/react";
 import Image from "next/image";
-import React,{useEffect, useState} from "react";
-
+import React, { useEffect, useState } from "react";
 
 const Navbar = ({
   name = "Walter White",
   expenses = {},
   avatar = "https://cdn.elnacional.com/wp-content/uploads/2021/05/walter-white.jpg",
 }) => {
-
-    const [spent, setSpent] = useState(0)
+  const [spent, setSpent] = useState(0);
 
   useEffect(() => {
-
     let tempExpendedSum = 0;
 
-    expenses.forEach(expense => {
-      tempExpendedSum += expense.amount
+    expenses.forEach((expense) => {
+      tempExpendedSum += expense.amount;
     });
 
     setSpent(tempExpendedSum.toFixed(2));
-  }, [expenses])
-  
-
+  }, [expenses]);
 
   return (
     <HStack
@@ -35,11 +30,23 @@ const Navbar = ({
       zIndex={1}
       position="fixed"
     >
-      
-      <Image src="/MyExpenseLogo.svg" width="45px" height="45px" style={{pointerEvents:"none"}}/>
+      <Image
+        src="/MyExpenseLogo.svg"
+        width="45px"
+        height="45px"
+        style={{ pointerEvents: "none" }}
+      />
 
-      <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={"2px"} borderBottomColor="primary">
-        <Text mt="7" color={"primary"}>Dashboard</Text>
+      <Box
+        cursor={"pointer"}
+        h="80px"
+        w="auto"
+        borderBottomWidth={"2px"}
+        borderBottomColor="primary"
+      >
+        <Text mt="7" color={"primary"}>
+          Dashboard
+        </Text>
       </Box>
 
       {/* <Box  cursor={"pointer"} h="80px" w="auto" borderBottomWidth={ page == 1 && "2px"} borderBottomColor="primary">
@@ -62,12 +69,28 @@ const Navbar = ({
             {name}
           </Text>
           <Text fontStyle={"italic"} fontSize="sm">
-            Spent:<i style={{color:"rgba(250,0,0,0.8)"}}>{" " + spent +  "€"}</i>  
+            Spent:
+            <i style={{ color: "rgba(250,0,0,0.8)" }}>{" " + spent + "€"}</i>
           </Text>
         </VStack>
-        <Avatar src={avatar} borderRadius="lg" referrerPolicy="no-referrer"/>
-        <Box h="10px" w="10px" transform={"rotate(45deg)"} bgColor="customPurple" cursor={"pointer"}>
-          <Box h="6px" w="6px" margin={"0 auto"} top="50%" left="50%" position={"absolute"} transform={"translate(-50%, -50%)"} bgColor="primary"/>
+        <Avatar src={avatar} borderRadius="lg" referrerPolicy="no-referrer" />
+        <Box
+          h="10px"
+          w="10px"
+          transform={"rotate(45deg)"}
+          bgColor="customPurple"
+          cursor={"pointer"}
+        >
+          <Box
+            h="6px"
+            w="6px"
+            margin={"0 auto"}
+            top="50%"
+            left="50%"
+            position={"absolute"}
+            transform={"translate(-50%, -50%)"}
+            bgColor="primary"
+          />
         </Box>
       </HStack>
     </HStack>

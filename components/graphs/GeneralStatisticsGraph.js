@@ -3,74 +3,16 @@ import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMedal } from "@fortawesome/free-solid-svg-icons";
+import { getMaxAmount,getYearlySpent,getMonthlySpent } from "../../utils/commonFunctions";
 
 const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
 const MotionText = motion(Text);
 
 const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
-  function getDayOfYear(date = new Date()) {
-    const timestamp1 = Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    const timestamp2 = Date.UTC(date.getFullYear(), 0, 0);
+  
 
-    const differenceInMilliseconds = timestamp1 - timestamp2;
-
-    const differenceInDays = differenceInMilliseconds / 1000 / 60 / 60 / 24;
-
-    return differenceInDays;
-  }
-
-  function getMonthlySpent() {
-    let total = 0;
-
-    if (expenses) {
-      expenses.forEach((expense) => {
-        let expenseDate = new Date(expense.date);
-        if (expenseDate.getMonth() === new Date().getMonth()) {
-          total += expense.amount;
-        }
-      });
-    }
-
-    return total;
-  }
-
-  function getYearlySpent() {
-    let total = 0;
-
-    if (expenses) {
-      expenses.forEach((expense) => {
-        let expenseDate = new Date(expense.date);
-        if (expenseDate.getFullYear() === new Date().getFullYear()) {
-          total += expense.amount;
-        }
-      });
-    }
-
-    return total;
-  }
-
-  function getMaxAmount() {
-    let best = 0;
-
-    if (expenses) {
-      expenses.forEach((expense) => {
-        let expenseDate = new Date(expense.date);
-        if (
-          expenseDate.getFullYear() === new Date().getFullYear() &&
-          expense.amount > best
-        ) {
-          best = expense.amount;
-        }
-      });
-    }
-
-    return best;
-  }
+  
 
   return (
     <MotionBox
@@ -125,7 +67,7 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             bgColor={"#6A59A2"}
             boxShadow="rgba(121, 108, 186, 0.35) 0px 3px 5px;"
             borderRadius="lg"
-            fontSize={"lg"}
+            fontSize={"xl"}
             fontWeight="700"
             initial={{ opacity: 0, scale: 0 }}
             animate={{
@@ -134,27 +76,10 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             }}
             transition={{ duration: 0.8, delay: 4 }}
           >
-            <Text userSelect={"none"} position="absolute" mr="15px" mt="0px">
-              {new Date().getDate()}
+            <Text userSelect={"none"} mt="2.5">
+              31
             </Text>
-            <Box pr="28px">
-              <Box
-                w="30px"
-                h="2px"
-                position="absolute"
-                mt="4"
-                transform={"rotate(-25deg)"}
-                bgColor={"fontColor"}
-                borderRadius="4px"
-              />
-            </Box>
-            <Text userSelect={"none"} position="absolute" pt="15px" pl="15px">
-              {new Date(
-                new Date().getMonth(),
-                new Date().getFullYear(),
-                0
-              ).getDate()}
-            </Text>
+            
           </MotionVStack>
           <MotionText
             initial={{ opacity: 0 }}
@@ -166,7 +91,7 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             fontWeight="600"
           >
             This month Expenses:{" "}
-            <i style={{ color: "#6A59A2" }}>{getMonthlySpent()} €</i>
+            <i style={{ color: "#6A59A2" }}>{getMonthlySpent(expenses)} €</i>
           </MotionText>
         </HStack>
 
@@ -177,7 +102,7 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             bgColor={"customCyan"}
             boxShadow="rgba(57, 175, 226, 0.35) 0px 3px 5px;"
             borderRadius="lg"
-            fontSize={"16px"}
+            fontSize={"xl"}
             fontWeight="700"
             initial={{ opacity: 0, scale: 0 }}
             animate={{
@@ -186,22 +111,8 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             }}
             transition={{ duration: 0.8, delay: 4.2 }}
           >
-            <Text userSelect={"none"} position="absolute" mr="15px" mt="0px">
-              {getDayOfYear()}
-            </Text>
-            <Box pr="28px">
-              <Box
-                w="30px"
-                h="2px"
-                position="absolute"
-                mt="4"
-                transform={"rotate(-20deg)"}
-                bgColor={"fontColor"}
-                borderRadius="4px"
-              />
-            </Box>
-            <Text userSelect={"none"} position="absolute" pt="15px" pl="15px">
-              365 {/* TODO: should change it for leap years */}
+            <Text userSelect={"none"} mt="2.5">
+              365
             </Text>
           </MotionVStack>
           <MotionText
@@ -214,7 +125,7 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             fontWeight="600"
           >
             This year Expenses:{" "}
-            <i style={{ color: "#39AFE2" }}>{getYearlySpent()} €</i>
+            <i style={{ color: "#39AFE2" }}>{getYearlySpent(expenses)} €</i>
           </MotionText>
         </HStack>
 
@@ -253,7 +164,7 @@ const GeneralStatisticsGraph = ({ expenses, isMobile = false }) => {
             fontWeight="600"
           >
             Top expense this year:{" "}
-            <i style={{ color: "#3FC4B7" }}>{getMaxAmount()} €</i>
+            <i style={{ color: "#3FC4B7" }}>{getMaxAmount(expenses)} €</i>
           </MotionText>
         </HStack>
       </VStack>

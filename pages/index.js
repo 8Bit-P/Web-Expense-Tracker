@@ -1,9 +1,8 @@
 import { VStack, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
-import axios from "axios";
 import useExpenses from "../hooks/useExpenses";
 import { useMediaQuery } from "@chakra-ui/react";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
 
@@ -48,7 +47,7 @@ export default function Home({ user }) {
   return (
     <VStack
       align={!isWideScreen ? "center" : "left"}
-      pb="50px"
+      pb={isWideScreen && "50px"}
       bgColor={"background"}
       h="100%"
       minH="100vh"
@@ -85,14 +84,14 @@ export default function Home({ user }) {
           profilePicture={user.image}
           expenses={expenses}
           fetchExpenses={fetchExpenses}
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
           isExpensesLoading={isExpensesLoading}
           currentExpenses={currentExpenses}
           totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
         />
       )}
     </VStack>

@@ -15,7 +15,8 @@ import MobileNavbar from "./MobileNavbar";
 import GeneralStatisticsGraph from "../graphs/GeneralStatisticsGraph";
 import MobileExpenseItem from "../expenses/MobileExpenseItem";
 import AddExpenseModal from "../expenses/AddExpenseModal";
-import FloatingAddButton from "../others/FloatingAddButton";
+import MobileMenu from "../others/MobileMenu";
+import MonthlyLimitGraph from "../graphs/MonthlyLimitGraph";
 
 const MotionVStack = motion(VStack);
 
@@ -29,48 +30,28 @@ const MobileDashBoard = ({
   totalPages,
   currentPage,
   setCurrentPage,
+  onOpen,
+  isOpen,
+  onClose,
 }) => {
 
-  /* INFO: NEW EXPENSE MODAL HOOK */
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
 
 
   return (
     <>
-      <AddExpenseModal isOpen={isOpen} onClose={onClose} fetchExpenses={fetchExpenses}/>
+      <AddExpenseModal isOpen={isOpen} onClose={onClose} fetchExpenses={fetchExpenses} isMobile={true}/>
       <MobileNavbar
         name={username}
         avatar={profilePicture}
         expenses={expenses}
       />
-
-      <VStack
-        w="90%"
-        maxW="500px"
-        h="200px"
-        bgColor={"blackAlpha.500"}
-        boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px;"
-        borderRadius="30px"
-        p="5"
-        align="left"
-        spacing="5"
-      >
-        <Text fontWeight={"400"}>Septiembre</Text>
-        <Text fontSize={"2xl"} fontWeight="600">
-          67.3 €
-        </Text>
-        <Progress
-          size="xs"
-          colorScheme={"purple"}
-          value={80}
-          borderRadius="30px"
-        />
-        <Text>More text here I guess</Text>
-      </VStack>
+      
+      <MonthlyLimitGraph expenses={expenses}/>
 
       <GeneralStatisticsGraph isMobile={true} expenses={expenses} />
 
-      <Box w="90%">
+      <Box w="90%" maxWidth={"500px"}>
         <Text color="whiteAlpha.700" fontWeight={"600"} pt="10" align="left">
           Daily Spends
         </Text>
@@ -118,7 +99,7 @@ const MobileDashBoard = ({
         isMobile={true}
       />
 
-      <FloatingAddButton/>
+      <MobileMenu onOpen={onOpen}/>
     </>
   );
 };

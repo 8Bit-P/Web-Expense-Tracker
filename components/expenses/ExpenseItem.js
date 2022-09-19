@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { UtilsContext } from "../../context/UtilsContext";
+import { COLORS, BOX_SHADOWS} from "../../utils/constants.js"
 
 /* TYPE TO ICON TRANSLATION */
 const ICONS = {
@@ -75,8 +76,8 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
     <Tr bgColor={"boxBackground"}>
       <Td>
         <Box
-          bgColor={"#6A59A2"}
-          boxShadow="rgba(121, 108, 186, 0.35) 0px 3px 5px;"
+          bgColor={COLORS[expense.type]}
+          boxShadow={BOX_SHADOWS[expense.type]}
           w="35px"
           h="35px"
           borderRadius={"md"}
@@ -144,8 +145,8 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
     <Tr bgColor={"boxBackground"} key={expense.id}>
       <Td>
         <Box
-          bgColor={"#6A59A2"}
-          boxShadow="rgba(121, 108, 186, 0.35) 0px 3px 5px;"
+          bgColor={COLORS[expense.type]}
+          boxShadow={BOX_SHADOWS[expense.type]}
           w="35px"
           h="35px"
           borderRadius={"md"}

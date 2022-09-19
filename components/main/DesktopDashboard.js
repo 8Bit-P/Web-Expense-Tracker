@@ -7,6 +7,8 @@ import {
   Box,
   Skeleton,
   useDisclosure,
+  Spacer,
+  Flex
 } from "@chakra-ui/react";
 
 import ExpensesList from "../expenses/ExpensesList";
@@ -17,6 +19,7 @@ import GeneralStatisticsGraph from "../graphs/GeneralStatisticsGraph";
 import MonthlyExpenseGraph from "../graphs/MonthlyExpenseGraph";
 import MonthlyLimitModal from "../others/MonthlyLimitModal";
 import { getFullNameDate } from "../../utils/commonFunctions.js";
+import ExpenseSorting from "../expenses/ExpenseSorting";
 
 const DesktopDashboard = ({
   username,
@@ -31,6 +34,7 @@ const DesktopDashboard = ({
   totalPages,
   currentPage,
   setCurrentPage,
+  updateSortingMethod,
 }) => {
   const {
     isOpen: isLimitModalOpen,
@@ -92,9 +96,18 @@ const DesktopDashboard = ({
       </HStack>
 
       <VStack align="left" pb="10">
+        <Flex  pt="50px" ml="120px" w="80%" maxW="1250px">
+          <Text fontWeight={"600"}>Daily expenses</Text>
+
+          <Spacer />
+
+          <ExpenseSorting
+            updateSortingMethod={updateSortingMethod}
+            isMobile={false}
+          />
+        </Flex>
         {isExpensesLoading ? (
           <VStack
-            pt="50px"
             pb="25px"
             w="80%"
             maxW="1250px"

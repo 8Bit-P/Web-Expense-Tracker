@@ -46,7 +46,6 @@ const ExpensesList = ({
         maxW="1250px"
         minW="900px"
         pl="120px"
-        pt="25px"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

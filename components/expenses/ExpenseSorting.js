@@ -41,9 +41,10 @@ const expenseTypes = [
   "BILL",
 ];
 
-const ExpenseSorting = ({ updateSortingMethod }) => {
+const ExpenseSorting = ({ updateSortingMethod, isMobile = true }) => {
   return (
-    <Menu  isLazy placement="bottom-start" gutter="10">
+    /* TODO: DISABLE CSS THAT CHANGES BGCOLOR ON HOVER TO DARK */
+    <Menu isLazy placement={isMobile ? "bottom-start" : "bottom-end"} gutter="10">
       <MenuButton
         color="whiteAlpha.700"
         fontWeight={"400"}
@@ -81,14 +82,16 @@ const ExpenseSorting = ({ updateSortingMethod }) => {
             Least expended
           </MenuItemOption>
         </MenuOptionGroup>
-        <MenuDivider  bgColor={"fontColor"} w="60%" mb="5" ml="10"/>
+        <MenuDivider bgColor={"fontColor"} w="60%" mb="5" ml="10" />
 
         <Wrap ml="10" pb="5" w="150px" align="center">
           {expenseTypes.map((expense) => {
             return (
               <MenuItem
-                _active={{backgroundColor:"transparent"}}
-                _focus={{backgroundColor:"transparent"}}
+                key={expense}
+                _hover={{ backgroundColor: "transparent" }}
+                _active={{ backgroundColor: "transparent" }}
+                _focus={{ backgroundColor: "transparent" }}
                 bgColor={COLORS[expense]}
                 boxShadow={`rgba(${BOX_SHADOWS[expense]}, 0.35) 0px 3px 5px;`}
                 w="40px"
@@ -103,7 +106,6 @@ const ExpenseSorting = ({ updateSortingMethod }) => {
                     width: "25px",
                     height: "25px",
                     margin: "0 auto",
-            
                   }}
                   icon={ICONS[expense]}
                 />

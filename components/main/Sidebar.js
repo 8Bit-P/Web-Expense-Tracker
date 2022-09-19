@@ -63,6 +63,7 @@ const Sidebar = ({fetchExpenses,isOpen, onOpen, onClose}) => {
           whileHover={{ rotate: 30 }}
           transition={{ duration: 0.15 }}
           onClick={() => goToConfig}
+          disabled={true}
         >
           <FontAwesomeIcon
             style={{

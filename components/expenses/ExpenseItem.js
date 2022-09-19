@@ -72,6 +72,8 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
       });
   };
 
+  /* TODO: MAKE ROUNDER */
+
   return !isEditing ? (
     <Tr bgColor={"boxBackground"}>
       <Td>

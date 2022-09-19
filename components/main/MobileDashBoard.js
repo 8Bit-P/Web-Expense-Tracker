@@ -1,12 +1,4 @@
-import {
-  VStack,
-  Text,
-  Box,
-  Spinner,
-  Button,
-  HStack,
-  Spacer,
-} from "@chakra-ui/react";
+import { VStack, Text, Spinner, Button, Spacer, Flex } from "@chakra-ui/react";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -19,6 +11,7 @@ import MobileExpenseItem from "../expenses/MobileExpenseItem";
 import AddExpenseModal from "../expenses/AddExpenseModal";
 import MobileMenu from "../others/MobileMenu";
 import MonthlyLimitGraph from "../graphs/MonthlyLimitGraph";
+import ExpenseSorting from "../expenses/ExpenseSorting";
 
 const MotionVStack = motion(VStack);
 
@@ -35,8 +28,8 @@ const MobileDashBoard = ({
   onOpen,
   isOpen,
   onClose,
+  updateSortingMethod,
 }) => {
-
   /* INFO: expense removing method */
   const [error, setError] = useState();
 
@@ -53,8 +46,7 @@ const MobileDashBoard = ({
       .then(() => {
         onClose();
         setError(null);
-      })
-      
+      });
   };
 
   return (
@@ -75,14 +67,16 @@ const MobileDashBoard = ({
 
       <GeneralStatisticsGraph isMobile={true} expenses={expenses} />
 
-      <HStack w="90%" maxWidth={"500px"}>
-        <Text color="whiteAlpha.700" fontWeight={"600"} pt="10" align="left">
+
+
+      {/* INFO: expenses */}
+      <Flex w="90%" maxWidth={"500px"} pt="10" align="center">
+        <Text ml="5" color="whiteAlpha.700" fontWeight={"600"} align="left">
           Daily Spends
         </Text>
-        <Spacer/>
-        <Text color="whiteAlpha.700" fontWeight={"400"}  pt="10" pr="5">Sort by</Text>
-      </HStack>
-      {/* INFO: expenses */}
+        <Spacer />
+        <ExpenseSorting updateSortingMethod={updateSortingMethod} />
+      </Flex>
 
       <MotionVStack
         maxW={"500px"}

@@ -107,7 +107,7 @@ const MobileExpenseItem = ({ expense, deleteExpense }) => {
 
           <HStack w="100%">
             <Spacer />
-            <IconButton zIndex={10} size="sm" colorScheme={"pink"} onClick={() => deleteExpense(expense.id)}>
+            <IconButton size="sm" colorScheme={"facebook"} onClick={() => deleteExpense(expense.id)}>
               <FontAwesomeIcon
                 style={{ height: "15px", width: "15px" }}
                 icon={faTrash}

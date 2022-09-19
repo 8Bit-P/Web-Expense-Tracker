@@ -89,11 +89,19 @@ export function formatDate(date) {
 }
 
 /* INFO: slices text to fit in x characters */
-export function sliceConcept(concept){
+export function sliceConcept(concept) {
   let words = concept.split(" ");
-  if(words[0].length < 10){
-      return words[0]
-  }else{
-      return concept.slice(0,7) + "...";
+  if (words[0].length < 10) {
+    return words[0];
+  } else {
+    return concept.slice(0, 7) + "...";
   }
+}
+
+export function getFullNameDate() {
+  let date = new Date().toLocaleString("default", { month: "long" });
+  let first = date.charAt(0).toUpperCase();
+  let rest = date.slice(1, date.length);
+
+  return first + rest + "-" + new Date().getFullYear();
 }

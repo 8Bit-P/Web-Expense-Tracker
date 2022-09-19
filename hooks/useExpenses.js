@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-const useExpenses = () => {
+const useExpenses = (sortMethod) => {
   const MAX_EXPENSES_DISPLAY = 5;
 
   /* INFO: Pagination */
@@ -26,16 +26,42 @@ const useExpenses = () => {
         email: session.user.email,
       })
       .then((res) => {
-        setExpenses(res.data);
-        /*TODO: MAYBE SOME KIND OF SORTING METHOD */
+        let data = res.data;
+        setExpenses(data);
+
+        /* INFO: array sorting */
+        if (sortMethod === "recent") {
+          data.sort((a, b) =>
+            new Date(a.date) > new Date(b.date)
+              ? -1
+              : new Date(a.date) < new Date(b.date)
+              ? 1
+              : 0
+          );
+        } else if (sortMethod === "least") {
+          
+          data.sort((a, b) =>
+            a.amount > b.amount ? 1 : a.amount < b.amount ? -1 : 0
+          );
+        } else if (sortMethod === "most") {
+          data.sort((a, b) =>
+            a.amount > b.amount ? -1 : a.amount < b.amount ? 1 : 0
+          );
+        } else {
+          if(sortMethod.slice(0,5) === "TYPE-"){
+            const type = sortMethod.slice(5,sortMethod.length);
+            data = data.filter(expense => expense.type === type);
+          }
+          
+        }
 
         //set corresponding pages (min 1, max numberPages/displayNumber)
         let tempTotalPages = Math.max(
-          Math.ceil(res.data.length / MAX_EXPENSES_DISPLAY),
+          Math.ceil(data.length / MAX_EXPENSES_DISPLAY),
           1
         );
         setTotalPages(tempTotalPages);
-        adjustCurrentExpenses(res.data);
+        adjustCurrentExpenses(data);
 
         if (currentPage > tempTotalPages) {
           let temp = currentPage - 1;
@@ -53,7 +79,7 @@ const useExpenses = () => {
   //load expenses once page has loaded
   useEffect(() => {
     fetchExpenses();
-  }, [session]);
+  }, [session, sortMethod]);
 
   const [currentExpenses, setCurrentExpenses] = useState([]);
 

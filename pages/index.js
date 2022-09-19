@@ -2,7 +2,7 @@ import { VStack, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import useExpenses from "../hooks/useExpenses";
 import { useMediaQuery } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UtilsContext } from "../context/UtilsContext";
 import { getSession } from "next-auth/react";
 
@@ -12,6 +12,14 @@ import MobileDashBoard from "../components/main/MobileDashBoard";
 export default function Home({ user }) {
   const [isWideScreen] = useMediaQuery("(min-width: 900px)");
   const utils = useContext(UtilsContext);
+
+  /* INFO: sorting state */
+  const [sortMethod, setSortMethod] = useState("recent")
+
+  const updateSortingMethod = (val) => {
+    setSortMethod(val);
+    console.log("set to: " + val);
+  }
 
   useEffect(() => {
     utils.email = user.email;
@@ -29,7 +37,7 @@ export default function Home({ user }) {
     setCurrentPage,
     currentExpenses,
     adjustCurrentExpenses
-  } = useExpenses();
+  } = useExpenses(sortMethod);
 
 
   useEffect(() => {
@@ -77,6 +85,7 @@ export default function Home({ user }) {
           totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          updateSortingMethod={updateSortingMethod}
         />
       ) : (
         <MobileDashBoard
@@ -92,6 +101,7 @@ export default function Home({ user }) {
           isOpen={isOpen}
           onOpen={onOpen}
           onClose={onClose}
+          updateSortingMethod={updateSortingMethod}
         />
       )}
     </VStack>

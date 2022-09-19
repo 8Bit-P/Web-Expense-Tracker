@@ -6,6 +6,7 @@ import {
   Button,
   Box,
   Skeleton,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import ExpensesList from "../expenses/ExpensesList";
@@ -14,6 +15,8 @@ import Pagination from "./Pagination";
 import Sidebar from "./Sidebar";
 import GeneralStatisticsGraph from "../graphs/GeneralStatisticsGraph";
 import MonthlyExpenseGraph from "../graphs/MonthlyExpenseGraph";
+import MonthlyLimitModal from "../others/MonthlyLimitModal";
+import { getFullNameDate } from "../../utils/commonFunctions.js";
 
 const DesktopDashboard = ({
   username,
@@ -29,17 +32,19 @@ const DesktopDashboard = ({
   currentPage,
   setCurrentPage,
 }) => {
-  /* INFO: get full name Date */
-  function getFullNameDate() {
-    let date = new Date().toLocaleString("default", { month: "long" });
-    let first = date.charAt(0).toUpperCase();
-    let rest = date.slice(1, date.length);
-
-    return first + rest + "-" + new Date().getFullYear();
-  }
+  const {
+    isOpen: isLimitModalOpen,
+    onOpen: onLimitModalOpen,
+    onClose: onLimitModalClose,
+  } = useDisclosure();
 
   return (
     <>
+      <MonthlyLimitModal
+        isOpen={isLimitModalOpen}
+        onClose={onLimitModalClose}
+        fetchExpenses={fetchExpenses}
+      />
       <Navbar name={username} avatar={profilePicture} expenses={expenses} />
       <Sidebar
         fetchExpenses={fetchExpenses}
@@ -73,6 +78,7 @@ const DesktopDashboard = ({
               _hover={{ backgroundColor: "transparent" }}
               _active={{ backgroundColor: "transparent" }}
               fontWeight="600"
+              onClick={onLimitModalOpen}
             >
               <Heading mb="2">+</Heading>
             </Button>
@@ -82,7 +88,7 @@ const DesktopDashboard = ({
           </HStack>
         </VStack>
 
-        <GeneralStatisticsGraph expenses={expenses}/>
+        <GeneralStatisticsGraph expenses={expenses} />
       </HStack>
 
       <VStack align="left" pb="10">

@@ -42,6 +42,7 @@ const ExpensesList = ({
         expenseId={selectedExpenseId}
       />
       <MotionBox
+      
         w="80%"
         maxW="1250px"
         minW="900px"
@@ -64,7 +65,7 @@ const ExpensesList = ({
               <Th></Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody >
             {currentExpenses.length !== 0 ? (
               currentExpenses.map((expense) => {
                 return (

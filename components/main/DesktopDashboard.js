@@ -8,7 +8,7 @@ import {
   Skeleton,
   useDisclosure,
   Spacer,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 
 import ExpensesList from "../expenses/ExpensesList";
@@ -96,7 +96,7 @@ const DesktopDashboard = ({
       </HStack>
 
       <VStack align="left" pb="10">
-        <Flex  pt="50px" ml="120px" w="80%" maxW="1250px">
+        <Flex pt="50px" ml="120px" w="80%" maxW="1150px" minW="900px">
           <Text fontWeight={"600"}>Daily expenses</Text>
 
           <Spacer />
@@ -107,13 +107,7 @@ const DesktopDashboard = ({
           />
         </Flex>
         {isExpensesLoading ? (
-          <VStack
-            pb="25px"
-            w="80%"
-            maxW="1250px"
-            pl="120px"
-            spacing="5"
-          >
+          <VStack pb="25px" w="80%" maxW="1250px" pl="120px" spacing="5">
             <Skeleton w="100%" h="20px" />
             <Skeleton w="100%" h="50px" />
             <Skeleton w="100%" h="50px" />
@@ -141,29 +135,20 @@ const DesktopDashboard = ({
           ADDITIONAL INFORMATION
         </Text>
 
-        <HStack align="left" pl="120px">
-          <Box
-            w="200px"
-            bgColor={"primary"}
-            borderRadius="md"
-            h="40px"
-            textAlign={"center"}
-            pt="2"
-            fontWeight={"600"}
-          >
-            Expenses this month
-          </Box>
-          <Box
-            w="200px"
-            bgColor={"primary"}
-            borderRadius="md"
-            h="40px"
-            textAlign={"center"}
-            pt="2"
-            fontWeight={"600"}
-          >
+        <HStack
+          align="left"
+          pl="120px"
+          w={"75%"}
+          minWidth={"700px"}
+          maxW="1100px"
+        >
+          <Text h="40px" textAlign={"center"} pt="2" fontWeight={"600"}>
+            Expenses this month:
+          </Text>
+          <Spacer />
+          <Text h="40px" textAlign={"center"} pt="2" fontWeight={"400"}>
             {getFullNameDate()}
-          </Box>
+          </Text>
         </HStack>
         <VStack align="left" spacing="6" pl="120px">
           <MonthlyExpenseGraph expenses={expenses} />

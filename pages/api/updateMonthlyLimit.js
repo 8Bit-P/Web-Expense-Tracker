@@ -30,7 +30,6 @@ export default async function handler(req, res) {
             },
         })
     
-        console.log("aqui")
 
       //201 created resource
       res.status(201).send(updateUser);

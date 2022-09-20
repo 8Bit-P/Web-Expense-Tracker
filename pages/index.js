@@ -18,7 +18,6 @@ export default function Home({ user }) {
 
   const updateSortingMethod = (val) => {
     setSortMethod(val);
-    console.log("set to: " + val);
   }
 
   useEffect(() => {
@@ -42,7 +41,6 @@ export default function Home({ user }) {
 
   useEffect(() => {
     //each time page is changed update expenses
-    /* TODO: check if if is neccessary */
     if (!isExpensesLoading) adjustCurrentExpenses(expenses);
   }, [currentPage]);
 
@@ -140,7 +138,7 @@ export const getServerSideProps = async (context) => {
       data: {
         username: user.name,
         email: user.email,
-        monthlyLimit: 0,
+        balance: 0,
       },
     });
   }

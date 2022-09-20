@@ -4,8 +4,8 @@ import { Chart as ChartJS } from "chart.js/auto"; /* WARNING: NEEDED IMPORT */
 import { Box } from "@chakra-ui/react";
 import { options } from "./Configurations/LineGraphConf";
 
-const MonthlyExpenseGraph = ({ expenses, isLowRes = false }) => {
-  //GRAPH CONFIGURATION
+const MonthlyExpenseGraph = ({ expenses}) => {
+
   const createArrayRef = useRef(false);
   const [labels, setLabels] = useState([]);
 
@@ -37,9 +37,6 @@ const MonthlyExpenseGraph = ({ expenses, isLowRes = false }) => {
     ],
   });
 
-  //End of graph configuration
-
-  /* TODO: usememo to prevent loading everytime */
   //current month expenses
   useEffect(() => {
     const filteredExpenses = expenses.filter(
@@ -61,11 +58,6 @@ const MonthlyExpenseGraph = ({ expenses, isLowRes = false }) => {
       finalMonthExpenses[index - 1] += filteredExpenses[i].amount;
     }
 
-    /* console.log(
-      "%c Final month expenses: ",
-      "background: #222; color: #bada55"
-    );
-    console.log(finalMonthExpenses); */
 
     const newData = {
       labels: labels,
@@ -87,16 +79,17 @@ const MonthlyExpenseGraph = ({ expenses, isLowRes = false }) => {
     }));
   }, [expenses]);
 
+  /* TODO: select month to show data */
   return (
     <Box
-      w={isLowRes ? "95%" : "75%"}
-      minWidth={!isLowRes && "700px"}
+      w={"75%"}
+      minWidth={"700px"}
       maxW="1000px"
       p="2"
       bgColor={"boxBackground"}
-      borderRadius="sm"
-      borderWidth={!isLowRes && "2px"}
-      borderColor={!isLowRes && "primary"}
+      borderRadius="xl"
+      borderWidth={"2px"}
+      borderColor={"customPurple"}
     >
       <Line data={data} options={options} redraw={true} />
     </Box>

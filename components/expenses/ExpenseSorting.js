@@ -6,10 +6,8 @@ import {
   MenuItemOption,
   Button,
   MenuDivider,
-  IconButton,
   MenuItem,
   Wrap,
-  Box,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,6 +20,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BOX_SHADOWS, COLORS } from "../../utils/constants";
+import { motion } from "framer-motion";
+
+const MotionMenuItem = motion(MenuItem);
 
 const ICONS = {
   FOOD: faBurger,
@@ -43,7 +44,6 @@ const expenseTypes = [
 
 const ExpenseSorting = ({ updateSortingMethod, isMobile = true }) => {
   return (
-    /* TODO: DISABLE CSS THAT CHANGES BGCOLOR ON HOVER TO DARK */
     <Menu isLazy placement={isMobile ? "bottom-start" : "bottom-end"} gutter="10">
       <MenuButton
         color="whiteAlpha.700"
@@ -87,11 +87,11 @@ const ExpenseSorting = ({ updateSortingMethod, isMobile = true }) => {
         <Wrap ml="10" pb="5" w="150px" align="center">
           {expenseTypes.map((expense) => {
             return (
-              <MenuItem
+              <MotionMenuItem
                 key={expense}
-                _hover={{ backgroundColor: "transparent" }}
-                _active={{ backgroundColor: "transparent" }}
-                _focus={{ backgroundColor: "transparent" }}
+                _hover={{bgColor:COLORS[expense]}}
+                _active={{bgColor:COLORS[expense]}}
+                _focus={{bgColor:COLORS[expense]}}
                 bgColor={COLORS[expense]}
                 boxShadow={`rgba(${BOX_SHADOWS[expense]}, 0.35) 0px 3px 5px;`}
                 w="40px"
@@ -100,6 +100,8 @@ const ExpenseSorting = ({ updateSortingMethod, isMobile = true }) => {
                 pt="2"
                 onClick={() => updateSortingMethod("TYPE-" + expense)}
                 p="0"
+                whileTap={{ y: "3px" }}
+                whileHover={{scale:1.05}}
               >
                 <FontAwesomeIcon
                   style={{
@@ -109,7 +111,7 @@ const ExpenseSorting = ({ updateSortingMethod, isMobile = true }) => {
                   }}
                   icon={ICONS[expense]}
                 />
-              </MenuItem>
+              </MotionMenuItem>
             );
           })}
         </Wrap>

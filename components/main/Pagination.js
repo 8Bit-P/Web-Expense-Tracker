@@ -191,7 +191,7 @@ const Pagination = ({ total = 1, currentPage, setCurrentPage,isMobile=false }) =
           moveRight();
         } else if (parseInt(p) === currentPage - 1) {
           //left
-          console.log("HA PASADO AQUI");
+          /* console.log("HA PASADO AQUI"); */
           moveLeft();
         } else {
           //both ends

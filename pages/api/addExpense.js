@@ -5,9 +5,6 @@ export default async function handler(req, res) {
     try {
       const { concept, expenseType: type, amount, date, email } = req.body;
 
-      /* TODO: ADD JSON WEB TOKEN */
-      /* TODO: validate inputs */
-      /* console.log(concept, type, amount, date, email) */
 
       if (!concept || !type || !amount || !date) {
         req

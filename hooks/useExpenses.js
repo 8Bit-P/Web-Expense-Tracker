@@ -22,7 +22,7 @@ const useExpenses = (sortMethod) => {
     if (status === "loading") return;
     setIsExpensesLoading(true);
     axios
-      .post("http://localhost:3000/api/getExpenses", {
+      .post(`${process.env.NEXT_PUBLIC_API_URL}getExpenses`, {
         email: session.user.email,
       })
       .then((res) => {

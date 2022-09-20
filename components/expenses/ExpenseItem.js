@@ -53,7 +53,7 @@ const ExpenseItem = ({ expense, deleteExpense, fetchExpenses }) => {
   const updateExpense = (expenseId) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:3000/api/updateExpense", {
+      .post(`${process.env.NEXT_PUBLIC_API_URL}updateExpense`, {
         concept: newConcept,
         id: expenseId,
         amount: newAmount,

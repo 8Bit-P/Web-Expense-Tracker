@@ -35,7 +35,7 @@ const MobileDashBoard = ({
 
   const deleteExpense = (expenseId) => {
     axios
-      .post("http://localhost:3000/api/removeExpense", { id: expenseId })
+      .post(`${process.env.NEXT_PUBLIC_API_URL}removeExpense`, { id: expenseId })
       .then(() => {
         fetchExpenses();
       })

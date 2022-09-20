@@ -58,10 +58,9 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
 
   const createExpense = () => {
 
-
     setIsLoading(true);
     axios
-      .post("http://localhost:3000/api/addExpense", {
+      .post(`${process.env.NEXT_PUBLIC_API_URL}addExpense`, {
         concept,
         expenseType,
         amount,

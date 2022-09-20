@@ -13,7 +13,7 @@ export default function useMonthlyLimit() {
     if(utils.email){
 
       axios
-        .post("http://localhost:3000/api/getUser", { email: utils.email })
+        .post(`${process.env.NEXT_PUBLIC_API_URL}getUser`, { email: utils.email })
         .then((res) => {
           /* console.log(res.data) */
           setMonthlyLimit(res.data.balance);

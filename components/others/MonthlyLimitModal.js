@@ -30,7 +30,7 @@ const MonthlyLimitModal = ({ isOpen, onClose,fetchMonthlyLimit }) => {
   const updateLimit = () => {
     setIsLoading(true);
     axios
-      .post("http://localhost:3000/api/updateMonthlyLimit", {
+      .post(`${process.env.NEXT_PUBLIC_API_URL}updateMonthlyLimit`, {
         email: utils.email,
         limit
       })

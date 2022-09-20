@@ -22,7 +22,7 @@ export default function Home({ user }) {
 
   useEffect(() => {
     utils.email = user.email;
-  }, [user]);
+  }, [user,utils]);
 
   //pagination
 

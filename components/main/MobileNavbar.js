@@ -2,9 +2,6 @@ import {
   Avatar,
   HStack,
   Spacer,
-  Text,
-  VStack,
-  Box,
   Heading,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -28,7 +25,7 @@ const MobileNavbar = ({
   }, [expenses]);
   return (
     <HStack h="80px" w="100%" p="5" color="fontColor" zIndex={1} mt="10">
-      <Image src="/MyExpenseLogo.svg" width="40px" height="40px" />
+      <Image alt="My Expense logo" src="/MyExpenseLogo.svg" width="40px" height="40px" />
 
       <Heading color="fontColor">Dashboard</Heading>
 

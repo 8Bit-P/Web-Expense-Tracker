@@ -4,7 +4,6 @@ import {
   VStack,
   Text,
   Button,
-  Box,
   Skeleton,
   useDisclosure,
   Spacer,

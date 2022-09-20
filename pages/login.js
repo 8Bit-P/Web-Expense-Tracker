@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
 
-function login() {
+export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -29,7 +29,7 @@ function login() {
 
       <VStack bgColor={"background"} h="100vh" color="fontColor">
         <VStack mt="30vh" p="10" spacing="10" bgColor={"boxBackground"} borderRadius="lg" boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"} userSelect="none">
-        <Image src="/MyExpenseLogo.svg" width="100px" height="100px" style={{pointerEvents:"none"}}/>
+        <Image alt="App Logo" src="/MyExpenseLogo.svg" width="100px" height="100px" style={{pointerEvents:"none"}}/>
 
           <VStack>
             <Button
@@ -71,4 +71,3 @@ function login() {
   );
 }
 
-export default login;

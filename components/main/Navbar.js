@@ -31,6 +31,7 @@ const Navbar = ({
       position="fixed"
     >
       <Image
+        alt="My Expense Logo"
         src="/MyExpenseLogo.svg"
         width="45px"
         height="45px"

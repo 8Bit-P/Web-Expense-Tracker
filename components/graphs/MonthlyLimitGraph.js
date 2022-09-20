@@ -80,7 +80,7 @@ const MonthlyLimitGraph = ({ expenses }) => {
         <Text>
           {calculateProgressValue() === 100 ? (
             <span style={{ color: "#e03436" }}>
-              "Money doesn't grow on trees!"
+              {"Money doesn't grow on trees!"}
             </span>
           ) : (
             <span>Nothing to worry about</span>

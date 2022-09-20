@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -31,7 +31,12 @@ import {
 import axios from "axios";
 import { UtilsContext } from "../../context/UtilsContext";
 
-const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
+const AddExpenseModal = ({
+  isOpen,
+  onClose,
+  fetchExpenses,
+  isMobile = false,
+}) => {
   const utils = useContext(UtilsContext);
 
   const [expenseType, setExpenseType] = useState();
@@ -57,7 +62,6 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
   };
 
   const createExpense = () => {
-
     setIsLoading(true);
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}addExpense`, {
@@ -87,7 +91,13 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
 
   /* TODO: MAKE IT LOOK BETTER */
   return (
-    <Modal size={isMobile ? "sm" : "md"} isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
+    <Modal
+      size={isMobile ? "sm" : "md"}
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      motionPreset="scale"
+    >
       <ModalOverlay />
       <ModalContent textAlign={"center"} bgColor={"modal"} color="fontColor">
         <ModalHeader mt="5">New Expense</ModalHeader>
@@ -96,18 +106,15 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
           <form>
             {/* CONCEPT */}
             <InputGroup w="300px" m="0 auto">
-              <InputLeftElement
-                pointerEvents="none"
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      width: "20px",
-                      height: "20px"
-                    }}
-                    icon={faNoteSticky}
-                  />
-                }
-              />
+              <InputLeftElement pointerEvents="none">
+                <FontAwesomeIcon
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                  icon={faNoteSticky}
+                />
+              </InputLeftElement>
               <Input
                 borderWidth="2px"
                 borderColor={"whiteAlpha.600"}
@@ -122,18 +129,15 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
 
             {/* AMOUNT */}
             <InputGroup w="300px" m="0 auto" mt="5">
-              <InputLeftElement
-                pointerEvents="none"
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                    }}
-                    icon={faMoneyBill}
-                  />
-                }
-              />
+              <InputLeftElement pointerEvents="none">
+                <FontAwesomeIcon
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                  icon={faMoneyBill}
+                />
+              </InputLeftElement>
               <Input
                 borderWidth="2px"
                 borderColor={"whiteAlpha.600"}
@@ -149,18 +153,15 @@ const AddExpenseModal = ({ isOpen, onClose,fetchExpenses,isMobile=false }) => {
             </InputGroup>
 
             <InputGroup w="300px" m="0 auto" mt="5">
-              <InputLeftElement
-                pointerEvents="none"
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                    }}
-                    icon={faCalendarAlt}
-                  />
-                }
-              />
+              <InputLeftElement pointerEvents="none">
+                <FontAwesomeIcon
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                  icon={faCalendarAlt}
+                />
+              </InputLeftElement>
               <Input
                 className="dateInput"
                 borderWidth="2px"

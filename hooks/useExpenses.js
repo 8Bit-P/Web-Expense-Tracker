@@ -89,6 +89,8 @@ const useExpenses = (sortMethod) => {
       beginingIndex + MAX_EXPENSES_DISPLAY,
       exp.length
     );
+    console.log("exp:");
+    console.log(exp);
     setCurrentExpenses(exp.slice(beginingIndex, endingIndex));
   };
 

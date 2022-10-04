@@ -41,7 +41,7 @@ export default function Home({ user }) {
 
   useEffect(() => {
     //each time page is changed update expenses
-    if (!isExpensesLoading) adjustCurrentExpenses(expenses);
+    fetchExpenses();
   }, [currentPage]);
 
   

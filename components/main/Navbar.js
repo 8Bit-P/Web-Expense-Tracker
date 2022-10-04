@@ -27,7 +27,7 @@ const Navbar = ({
       spacing={10}
       color="fontColor"
       bgColor="boxBackground"
-      zIndex={1}
+      zIndex={10}
       position="fixed"
     >
       <Image

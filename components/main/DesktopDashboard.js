@@ -9,13 +9,13 @@ import {
   Spacer,
   Flex,
 } from "@chakra-ui/react";
+import React,{ Suspense } from "react";
 
 import ExpensesList from "../expenses/ExpensesList";
 import Navbar from "./Navbar";
 import Pagination from "./Pagination";
 import Sidebar from "./Sidebar";
 import GeneralStatisticsGraph from "../graphs/GeneralStatisticsGraph";
-import MonthlyExpenseGraph from "../graphs/MonthlyExpenseGraph";
 import MonthlyLimitModal from "../others/MonthlyLimitModal";
 import { getFullNameDate } from "../../utils/commonFunctions.js";
 import ExpenseSorting from "../expenses/ExpenseSorting";
@@ -40,6 +40,8 @@ const DesktopDashboard = ({
     onOpen: onLimitModalOpen,
     onClose: onLimitModalClose,
   } = useDisclosure();
+
+  const MonthlyExpenseGraph = React.lazy(() => import("../graphs/MonthlyExpenseGraph"))
 
   return (
     <>
@@ -150,7 +152,9 @@ const DesktopDashboard = ({
           </Text>
         </HStack>
         <VStack align="left" spacing="6" pl="120px">
-          <MonthlyExpenseGraph expenses={expenses} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MonthlyExpenseGraph expenses={expenses} />
+          </Suspense>
         </VStack>
       </VStack>
     </>
